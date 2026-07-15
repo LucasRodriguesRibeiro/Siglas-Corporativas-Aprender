@@ -24,9 +24,19 @@ import {
   Package,
   ShoppingCart
 } from "lucide-react";
-import { Sigla, BlogArticle, PortalStats } from "../types";
+import { Sigla, BlogArticle, PortalStats, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
 import { SiglaCardSkeleton } from "../components/Skeleton";
+
+export const TIPO_LABELS: Record<string, string> = {
+  SIGLA: "Sigla",
+  TERMO: "Termo Corporativo",
+  CARGO: "Cargo Executivo",
+  DEPARTAMENTO: "Departamento",
+  METODOLOGIA: "Metodologia",
+  FERRAMENTA: "Ferramenta",
+  CONCEITO: "Conceito"
+};
 
 const CATEGORY_INTRO_TEXTS: Record<string, string> = {
   "Todas": "Seja bem-vindo ao maior portal de siglas corporativas do Brasil. Aqui você pode pesquisar, filtrar e aprender o significado de mais de 500 siglas e termos empresariais utilizados no mercado nacional e internacional. Navegue pelas nossas categorias, faça download do guia completo em PDF para estudar de forma offline, e domine os jargões e expressões mais influentes do mundo corporativo para alavancar a sua autoridade profissional.",
@@ -187,14 +197,19 @@ export default function HomeView({
       return false;
     }
 
-    // 4. Search Query filter (matches sigla, nome, descricao, tags)
+    // 4. Search Query filter (matches sigla, nome, descricao, tags, tipo, sinonimos, palavras_chave, nome_ingles, nome_portugues)
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase().trim();
       return (
         item.sigla.toLowerCase().includes(q) ||
         item.nome_completo.toLowerCase().includes(q) ||
         item.descricao_curta.toLowerCase().includes(q) ||
-        item.tags.some(tag => tag.toLowerCase().includes(q))
+        item.tags.some(tag => tag.toLowerCase().includes(q)) ||
+        (item.tipo && item.tipo.toLowerCase().includes(q)) ||
+        (item.nome_ingles && item.nome_ingles.toLowerCase().includes(q)) ||
+        (item.nome_portugues && item.nome_portugues.toLowerCase().includes(q)) ||
+        (item.sinonimos && item.sinonimos.some(sin => sin.toLowerCase().includes(q))) ||
+        (item.palavras_chave && item.palavras_chave.some(pc => pc.toLowerCase().includes(q)))
       );
     }
 
@@ -218,13 +233,45 @@ export default function HomeView({
     return 0;
   });
 
-  // Autocomplete Suggestions (top 5 matched while typing)
-  const autocompleteSuggestions = searchQuery.trim() !== "" 
-    ? siglas.filter(item => 
-        item.sigla.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-        item.nome_completo.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 5)
-    : [];
+  // Autocomplete Suggestions (top 6 matched while typing, prioritized by relevance)
+  const autocompleteSuggestions = (() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return [];
+
+    const startsWithSigla: typeof siglas = [];
+    const containsSigla: typeof siglas = [];
+    const containsName: typeof siglas = [];
+    const containsOthers: typeof siglas = [];
+
+    for (const item of siglas) {
+      const siglaLower = item.sigla.toLowerCase();
+      const nomeLower = item.nome_completo.toLowerCase();
+      const descLower = item.descricao_curta.toLowerCase();
+      
+      const matchesSinonimos = item.sinonimos?.some(sin => sin.toLowerCase().includes(query)) || false;
+      const matchesPalavrasChave = item.palavras_chave?.some(pc => pc.toLowerCase().includes(query)) || false;
+      const matchesNomeIngles = item.nome_ingles?.toLowerCase().includes(query) || false;
+      const matchesNomePortugues = item.nome_portugues?.toLowerCase().includes(query) || false;
+
+      if (siglaLower.startsWith(query)) {
+        startsWithSigla.push(item);
+      } else if (siglaLower.includes(query)) {
+        containsSigla.push(item);
+      } else if (nomeLower.includes(query) || matchesNomePortugues || matchesNomeIngles) {
+        containsName.push(item);
+      } else if (
+        descLower.includes(query) || 
+        item.tags.some(t => t.toLowerCase().includes(query)) ||
+        matchesSinonimos ||
+        matchesPalavrasChave ||
+        (item.tipo && item.tipo.toLowerCase().includes(query))
+      ) {
+        containsOthers.push(item);
+      }
+    }
+
+    return [...startsWithSigla, ...containsSigla, ...containsName, ...containsOthers].slice(0, 6);
+  })();
 
   const showCategoryGrid = selectedCategory === "Todas" && searchQuery.trim() === "" && selectedLetter === "Todas" && !showFavorites;
 
@@ -333,7 +380,7 @@ export default function HomeView({
                 {autocompleteSuggestions.map((item) => (
                   <div
                     key={item.id}
-                    onMouseDown={() => navigate(`/sigla/${item.slug}`)}
+                    onMouseDown={() => navigate(getItemUrl(item))}
                     className="p-4 hover:bg-[#162540] cursor-pointer flex items-center justify-between transition-colors duration-250"
                   >
                     <div>
@@ -341,7 +388,7 @@ export default function HomeView({
                         {item.sigla}
                       </span>
                       <span className="text-sm font-medium text-white">
-                        {item.nome_completo}
+                        {item.nome_completo} {item.tipo ? `(${TIPO_LABELS[item.tipo] || item.tipo})` : ""}
                       </span>
                     </div>
                     <span className="text-xs text-[#B6C2D0] font-mono bg-[#0D1628] border border-white/[0.05] px-2 py-0.5 rounded-md">
@@ -520,7 +567,7 @@ export default function HomeView({
                     return (
                       <div
                         key={item.id}
-                        onClick={() => navigate(`/sigla/${item.slug}`)}
+                        onClick={() => navigate(getItemUrl(item))}
                         className="group relative p-6 bg-[#111C31] border border-white/[0.08] hover:bg-[#162540] hover:scale-102 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] shadow-md rounded-[20px] transition-all duration-250 cursor-pointer flex flex-col justify-between"
                       >
                         <div>
@@ -531,7 +578,12 @@ export default function HomeView({
                             </span>
                             
                             <div className="flex items-center space-x-2">
-                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#0D1628] text-[#00C2A8] border border-white/[0.05]">
+                              {item.tipo && (
+                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/15">
+                                  {TIPO_LABELS[item.tipo] || item.tipo}
+                                </span>
+                              )}
+                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#0D1628] text-[#B6C2D0] border border-white/[0.05]">
                                 {item.categoria}
                               </span>
                             </div>

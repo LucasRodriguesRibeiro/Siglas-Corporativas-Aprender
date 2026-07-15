@@ -108,7 +108,12 @@ app.get("/api/siglas", (req, res) => {
         s.nome_completo.toLowerCase().includes(q) ||
         s.descricao_curta.toLowerCase().includes(q) ||
         s.categoria.toLowerCase().includes(q) ||
-        s.tags.some(t => t.toLowerCase().includes(q))
+        s.tags.some(t => t.toLowerCase().includes(q)) ||
+        (s.tipo && s.tipo.toLowerCase().includes(q)) ||
+        (s.nome_ingles && s.nome_ingles.toLowerCase().includes(q)) ||
+        (s.nome_portugues && s.nome_portugues.toLowerCase().includes(q)) ||
+        (s.sinonimos && s.sinonimos.some(sin => sin.toLowerCase().includes(q))) ||
+        (s.palavras_chave && s.palavras_chave.some(pc => pc.toLowerCase().includes(q)))
     );
   }
 
@@ -152,7 +157,7 @@ app.get("/api/siglas/slug/:slug", (req, res) => {
 
 // 4. POST Create Sigla
 app.post("/api/siglas", (req, res) => {
-  const { sigla, nome_completo, traducao, descricao_curta, descricao_longa, categoria, subcategoria, origem, historia, pronuncia, exemplo, tags } = req.body;
+  const { sigla, nome_completo, traducao, descricao_curta, descricao_longa, categoria, subcategoria, origem, historia, pronuncia, exemplo, tags, tipo, sinonimos, palavras_chave, nome_ingles, nome_portugues } = req.body;
   
   if (!sigla || !nome_completo || !descricao_curta || !categoria) {
     return res.status(400).json({ error: "Os campos Sigla, Nome Completo, Descrição Curta e Categoria são obrigatórios." });
@@ -184,7 +189,12 @@ app.post("/api/siglas", (req, res) => {
     tags: Array.isArray(tags) ? tags : [categoria.toLowerCase()],
     popularidade: 50,
     criado_em: new Date().toISOString(),
-    atualizado_em: new Date().toISOString()
+    atualizado_em: new Date().toISOString(),
+    tipo: tipo || "SIGLA",
+    sinonimos: Array.isArray(sinonimos) ? sinonimos : [],
+    palavras_chave: Array.isArray(palavras_chave) ? palavras_chave : [],
+    nome_ingles: nome_ingles || "",
+    nome_portugues: nome_portugues || ""
   };
 
   siglasList.push(newSigla);
@@ -219,7 +229,12 @@ app.put("/api/siglas/:id", (req, res) => {
     exemplo: body.exemplo !== undefined ? body.exemplo.trim() : current.exemplo,
     tags: Array.isArray(body.tags) ? body.tags : current.tags,
     popularidade: body.popularidade !== undefined ? Number(body.popularidade) : current.popularidade,
-    atualizado_em: new Date().toISOString()
+    atualizado_em: new Date().toISOString(),
+    tipo: body.tipo !== undefined ? body.tipo : current.tipo,
+    sinonimos: Array.isArray(body.sinonimos) ? body.sinonimos : current.sinonimos,
+    palavras_chave: Array.isArray(body.palavras_chave) ? body.palavras_chave : current.palavras_chave,
+    nome_ingles: body.nome_ingles !== undefined ? body.nome_ingles : current.nome_ingles,
+    nome_portugues: body.nome_portugues !== undefined ? body.nome_portugues : current.nome_portugues
   };
 
   siglasList[index] = updatedSigla;

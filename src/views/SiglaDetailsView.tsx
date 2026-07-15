@@ -17,8 +17,9 @@ import {
   Twitter,
   Linkedin
 } from "lucide-react";
-import { Sigla } from "../types";
+import { Sigla, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
+import { TIPO_LABELS } from "./HomeView";
 
 interface SiglaDetailsViewProps {
   slug: string;
@@ -194,9 +195,16 @@ export default function SiglaDetailsView({
           <div className="bg-[#111C31] p-5 sm:p-6 md:p-8 border border-white/[0.08] rounded-[20px] space-y-5 shadow-lg">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="space-y-1.5">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0D1628] text-[#00C2A8] border border-white/[0.05]">
-                  Área: {sigla.categoria}
-                </span>
+                <div className="flex flex-wrap gap-2 items-center">
+                  {sigla.tipo && (
+                    <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/15">
+                      {TIPO_LABELS[sigla.tipo] || sigla.tipo}
+                    </span>
+                  )}
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0D1628] text-[#B6C2D0] border border-white/[0.05]">
+                    Área: {sigla.categoria}
+                  </span>
+                </div>
                 
                 <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-white tracking-tight flex items-center">
                   <span>{sigla.sigla}</span>
@@ -400,7 +408,7 @@ export default function SiglaDetailsView({
           {related.length > 0 && (
             <div className="p-5 sm:p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] shadow-md space-y-4">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#7C8AA5] flex items-center justify-between">
-                <span>Siglas Relacionadas</span>
+                <span>Conteúdos Relacionados (Veja também)</span>
                 <BookOpen className="w-3.5 h-3.5 text-[#00C2A8]" />
               </h3>
 
@@ -408,12 +416,19 @@ export default function SiglaDetailsView({
                 {related.map((item) => (
                   <div
                     key={item.id}
-                    onClick={() => navigate(`/sigla/${item.slug}`)}
+                    onClick={() => navigate(getItemUrl(item))}
                     className="p-3 bg-[#0D1628] hover:bg-[#162540] border border-white/[0.05] rounded-xl transition-all cursor-pointer space-y-1 group"
                   >
-                    <span className="font-display font-bold text-[#00C2A8] text-sm group-hover:underline">
-                      {item.sigla}
-                    </span>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-display font-bold text-[#00C2A8] text-sm group-hover:underline">
+                        {item.sigla}
+                      </span>
+                      {item.tipo && (
+                        <span className="text-[9px] font-semibold text-[#7C8AA5] uppercase tracking-wider">
+                          {TIPO_LABELS[item.tipo] || item.tipo}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs font-medium text-white line-clamp-1">
                       {item.nome_completo}
                     </p>

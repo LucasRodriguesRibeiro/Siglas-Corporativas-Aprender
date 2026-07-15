@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import HomeView from "./views/HomeView";
 import SiglaDetailsView from "./views/SiglaDetailsView";
 import BlogView from "./views/BlogView";
+import { getItemUrl } from "./types";
 
 // Custom light-weight router hook to support back/forward buttons and server SPA interception
 function usePath() {
@@ -171,9 +172,11 @@ export default function App() {
       );
     }
 
-    // 2. Sigla Detail Dynamic Route: match "/sigla/:slug"
-    if (path.startsWith("/sigla/")) {
-      const slug = path.replace("/sigla/", "").split(/[?#]/)[0];
+    // 2. Sigla Detail Dynamic Route: match "/sigla/:slug", "/termo/:slug", "/cargo/:slug", etc.
+    const pathPrefixes = ["/sigla/", "/termo/", "/cargo/", "/departamento/", "/metodologia/", "/ferramenta/", "/conceito/"];
+    const matchedPrefix = pathPrefixes.find(p => path.startsWith(p));
+    if (matchedPrefix) {
+      const slug = path.replace(matchedPrefix, "").split(/[?#]/)[0];
       return (
         <SiglaDetailsView
           slug={slug}

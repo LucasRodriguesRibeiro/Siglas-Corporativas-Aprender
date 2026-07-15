@@ -4,9 +4,9 @@
 
 export interface Sigla {
   id: string;
-  sigla: string;
+  sigla: string; // This can represent the acronym, short term, or name
   slug: string;
-  nome_completo: string;
+  nome_completo: string; // Full name or title
   traducao: string;
   descricao_curta: string;
   descricao_longa: string;
@@ -20,6 +20,13 @@ export interface Sigla {
   popularidade: number;
   criado_em: string;
   atualizado_em: string;
+  
+  // New Universal Search fields
+  tipo?: 'SIGLA' | 'TERMO' | 'CARGO' | 'DEPARTAMENTO' | 'METODOLOGIA' | 'FERRAMENTA' | 'CONCEITO';
+  sinonimos?: string[];
+  palavras_chave?: string[];
+  nome_ingles?: string;
+  nome_portugues?: string;
 }
 
 export interface BlogArticle {
@@ -41,4 +48,9 @@ export interface PortalStats {
   popular: Sigla[];
   latest: Sigla[];
   categories: { name: string; count: number }[];
+}
+
+export function getItemUrl(item: { tipo?: string; slug: string }) {
+  const t = item.tipo?.toLowerCase() || "sigla";
+  return `/${t}/${item.slug}`;
 }
