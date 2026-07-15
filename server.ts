@@ -669,6 +669,11 @@ function injectSEOMetadata(html: string, urlPath: string): string {
 // VITE INTEGRATION MIDDLEWARE
 // ----------------------------------------------------
 async function startServer() {
+  // Explicit route for Google Search Console Verification
+  app.get("/google072a8f187fc0c605.html", (req, res) => {
+    res.type("text/html").send("google-site-verification: google072a8f187fc0c605.html");
+  });
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
