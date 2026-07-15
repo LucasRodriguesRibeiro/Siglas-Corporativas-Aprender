@@ -1,36 +1,56 @@
-import React from "react";
-import { Sparkles } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface AdsPlaceholderProps {
   position: "top" | "sidebar" | "content" | "footer";
 }
 
 export default function AdsPlaceholder({ position }: AdsPlaceholderProps) {
-  const styles = {
-    top: "w-full max-w-4xl mx-auto h-24 mb-8 bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-center p-4",
-    sidebar: "w-full h-96 sticky top-24 bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center justify-center p-4 hidden lg:flex",
-    content: "w-full h-32 my-8 bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-center p-4",
-    footer: "w-full max-w-4xl mx-auto h-24 mt-8 bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-center p-4",
-  };
+  const [isProduction, setIsProduction] = useState(false);
 
-  const labels = {
-    top: "Publicidade Recomendada (728x90)",
-    sidebar: "Publicidade Lateral (300x600)",
-    content: "Anúncio Patrocinado (Conteúdo)",
-    footer: "Publicidade Rodapé (728x90)",
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname;
+      // Identify custom production domains by excluding local development, AI Studio staging/preview, and default cloud run URLs
+      const isProd = !hostname.includes("localhost") && 
+                     !hostname.includes("127.0.0.1") && 
+                     !hostname.includes("ais-dev") && 
+                     !hostname.includes("ais-pre") &&
+                     !hostname.includes("run.app");
+      
+      setIsProduction(isProd);
+
+      if (isProd) {
+        try {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        } catch (e) {
+          // Catch any push errors before script loads
+        }
+      }
+    }
+  }, [position]);
+
+  if (!isProduction) {
+    return null; // Do not render any empty ad container or whitespace on dev/preview environments to avoid blank spaces
+  }
+
+  const styles = {
+    top: "w-full max-w-4xl mx-auto overflow-hidden",
+    sidebar: "w-full sticky top-24 hidden lg:block overflow-hidden",
+    content: "w-full overflow-hidden",
+    footer: "w-full max-w-4xl mx-auto overflow-hidden",
   };
 
   return (
     <div className={styles[position]} id={`ad-space-${position}`}>
-      <div className="flex flex-col items-center text-center space-y-1">
-        <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>{labels[position]}</span>
-        </div>
-        <p className="text-[11px] text-slate-350 dark:text-slate-600">
-          Espaço reservado para o Google AdSense (sem prejudicar a experiência do usuário)
-        </p>
-      </div>
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-7149100665310787"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
     </div>
   );
 }
+
+

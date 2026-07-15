@@ -75,3 +75,14 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Collapse unfilled Google AdSense units automatically to avoid blank spaces */
+ins.adsbygoogle[data-ad-status="unfilled"],
+ins.adsbygoogle[data-adsbygoogle-status="done"]:empty {
+  display: none !important;
+  height: 0px !important;
+  width: 0px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+

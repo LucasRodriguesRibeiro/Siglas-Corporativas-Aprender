@@ -257,9 +257,9 @@ export default function HomeView({
   const showCategoryGrid = selectedCategory === "Todas" && searchQuery.trim() === "" && selectedLetter === "Todas" && !showFavorites;
 
   return (
-    <div className="space-y-12 pb-16 bg-[#07111F]">
+    <div className="pb-16 bg-[#07111F]">
       {/* 1. Hero Search Area */}
-      <section className="relative pt-6 sm:pt-8 pb-8 sm:pb-12 bg-[#07111F] transition-all duration-250">
+      <section className="relative pt-6 sm:pt-8 pb-4 bg-[#07111F] transition-all duration-250">
         <div className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full text-center">
           <div className="pt-2 sm:pt-4 pb-4">
             <h1 className="font-display font-extrabold text-4xl sm:text-6xl tracking-tight text-white leading-tight">
@@ -351,8 +351,8 @@ export default function HomeView({
       {/* Ads Top space */}
       <AdsPlaceholder position="top" />
 
-      {/* 2. Interactive Navigation Filters & Siglas Grid - mt-14 is exactly 56px (Stats -> Categories: 56px) */}
-      <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-8 mt-14">
+      {/* 2. Interactive Navigation Filters & Siglas Grid - reduced margin-top for a tighter, cleaner layout */}
+      <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
         {/* Main Content Area: Left/Mid (Grid) */}
         <div className="lg:col-span-3 space-y-6">
           {showCategoryGrid ? (
@@ -589,7 +589,7 @@ export default function HomeView({
 
       {/* 3. Integrated Blog Highlights Grid - mt-14/py-14 is exactly 56px (Categories -> Articles: 56px) */}
       {recentPosts.length > 0 && (
-        <section className="bg-[#0D1628] py-14 border-y border-white/[0.08] transition-all">
+        <section className="bg-[#0D1628] py-14 border-y border-white/[0.08] transition-all mt-12 sm:mt-16">
           <div className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full space-y-6">
             <div className="flex items-end justify-between border-b border-white/[0.06] pb-4">
               <div className="space-y-1">
@@ -644,7 +644,7 @@ export default function HomeView({
       )}
 
       {/* 4. Semantic SEO Learning Guide Section */}
-      <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full py-14 border-t border-white/[0.08] transition-all">
+      <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full py-14 border-t border-white/[0.08] transition-all mt-12 sm:mt-16">
         <div className="max-w-3xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#111C31] border border-white/[0.08] text-[#00C2A8]">
@@ -690,7 +690,9 @@ export default function HomeView({
       </section>
 
       {/* Ads Footer space */}
-      <AdsPlaceholder position="footer" />
+      <div className="mt-8 sm:mt-12">
+        <AdsPlaceholder position="footer" />
+      </div>
     </div>
   );
 }
