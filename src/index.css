@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium SaaS Design Palette */
+  --color-bg-primary: #07111F;
+  --color-bg-secondary: #0D1628;
+  --color-bg-card: #111C31;
+  --color-bg-card-hover: #162540;
+  
+  --color-brand-primary: #00C2A8;
+  --color-brand-primary-hover: #00D8BB;
+  --color-brand-secondary: #3B82F6;
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B6C2D0;
+  --color-text-disabled: #7C8AA5;
+  
+  --color-border-premium: rgba(255, 255, 255, 0.08);
+  --color-divider-premium: rgba(255, 255, 255, 0.06);
+  
+  --color-status-error: #EF4444;
+  --color-status-success: #10B981;
+  --color-status-warning: #F59E0B;
+}
+
+/* Base resets & custom scrollbars and utility animations */
+body {
+  font-family: var(--font-sans);
+  background-color: #07111F;
+  color: #FFFFFF;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  line-height: 1.6;
+}
+
+/* Elegant scrollbar matching our premium SaaS theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07111F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111C31;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #162540;
+  border-color: #00C2A8;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
