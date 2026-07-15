@@ -5,6 +5,7 @@ import HomeView from "./views/HomeView";
 import SiglaDetailsView from "./views/SiglaDetailsView";
 import BlogView from "./views/BlogView";
 import { getItemUrl } from "./types";
+import { getFilteredSiglas } from "./data/dataService";
 
 // Custom light-weight router hook to support back/forward buttons and server SPA interception
 function usePath() {
@@ -112,18 +113,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    async function fetchAllSiglas() {
+    function loadAllSiglas() {
       try {
-        const res = await fetch("/api/siglas");
-        if (res.ok) {
-          const data = await res.json();
-          setAllSiglas(data);
-        }
+        const data = getFilteredSiglas();
+        setAllSiglas(data);
       } catch (err) {
         console.error("Erro ao pré-carregar siglas para PDF:", err);
       }
     }
-    fetchAllSiglas();
+    loadAllSiglas();
   }, []);
 
   // Sync theme changes with DOM document element

@@ -17,6 +17,7 @@ import {
 import { BlogArticle } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
 import { BlogCardSkeleton } from "../components/Skeleton";
+import { getBlogArticles, getBlogArticleBySlug } from "../data/dataService";
 
 interface BlogViewProps {
   articleSlug?: string;
@@ -34,31 +35,27 @@ export default function BlogView({ articleSlug, navigate }: BlogViewProps) {
 
   // Load appropriate data
   useEffect(() => {
-    async function loadBlogData() {
+    function loadBlogData() {
       try {
         setLoading(true);
         setError(false);
 
         if (articleSlug) {
-          // Load specific article
-          const res = await fetch(`/api/blog/${articleSlug.toLowerCase()}`);
-          if (!res.ok) {
+          // Load specific article locally
+          const data = getBlogArticleBySlug(articleSlug);
+          if (!data) {
             setError(true);
             setLoading(false);
             return;
           }
-          const data = await res.json();
           setArticle(data);
           
           // Seed initial Likes count randomly
           setLikes(Math.floor(Math.random() * 40) + 12);
         } else {
-          // Load list
-          const res = await fetch("/api/blog");
-          if (res.ok) {
-            const data = await res.json();
-            setArticles(data);
-          }
+          // Load list locally
+          const data = getBlogArticles();
+          setArticles(data);
         }
       } catch (err) {
         console.error("Erro ao carregar dados do blog:", err);

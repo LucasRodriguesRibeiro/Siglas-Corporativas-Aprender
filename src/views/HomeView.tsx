@@ -27,6 +27,7 @@ import {
 import { Sigla, BlogArticle, PortalStats, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
 import { SiglaCardSkeleton } from "../components/Skeleton";
+import { getPortalStats, getBlogArticles, getFilteredSiglas, createCustomSigla } from "../data/dataService";
 
 export const TIPO_LABELS: Record<string, string> = {
   SIGLA: "Sigla",
@@ -147,29 +148,20 @@ export default function HomeView({
 
   // Fetch initial data
   useEffect(() => {
-    async function loadData() {
+    function loadData() {
       try {
         setLoading(true);
-        // Load stats
-        const statsRes = await fetch("/api/stats");
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          setStats(statsData);
-        }
+        // Load stats from local service
+        const statsData = getPortalStats();
+        setStats(statsData);
 
-        // Load blog articles
-        const blogRes = await fetch("/api/blog");
-        if (blogRes.ok) {
-          const blogData = await blogRes.json();
-          setRecentPosts(blogData.slice(0, 3));
-        }
+        // Load blog articles from local service
+        const blogData = getBlogArticles();
+        setRecentPosts(blogData.slice(0, 3));
 
-        // Load all siglas for client-side search indexing
-        const siglasRes = await fetch("/api/siglas");
-        if (siglasRes.ok) {
-          const siglasData = await siglasRes.json();
-          setSiglas(siglasData);
-        }
+        // Load all siglas from local service
+        const siglasData = getFilteredSiglas();
+        setSiglas(siglasData);
       } catch (err) {
         console.error("Erro ao carregar dados da Home:", err);
       } finally {
@@ -302,18 +294,15 @@ export default function HomeView({
     try {
       setContribSubmitting(true);
       setContribError("");
-      const res = await fetch("/api/siglas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      
+      const savedSigla = createCustomSigla({
+        sigla: contribSigla.toUpperCase().trim(),
+        nome_completo: contribNomeCompleto.trim(),
+        descricao_curta: contribDescricaoCurta.trim(),
+        categoria: contribCategory,
+        tags: [contribCategory.toLowerCase(), "contribuição"]
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || "Erro ao salvar a sugestão.");
-      }
-
-      const savedSigla = await res.json();
       // Add to local list so it renders immediately
       setSiglas([savedSigla, ...siglas]);
       setContribSuccess(true);
@@ -322,9 +311,8 @@ export default function HomeView({
       setContribDescricaoCurta("");
       
       // Update stats
-      if (stats) {
-        setStats({ ...stats, totalSiglas: stats.totalSiglas + 1 });
-      }
+      const statsData = getPortalStats();
+      setStats(statsData);
 
       setTimeout(() => setContribSuccess(false), 5000);
     } catch (err: any) {

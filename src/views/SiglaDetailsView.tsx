@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { 
   ArrowLeft, 
   Bookmark, 
-  Share2, 
   Copy, 
   Check, 
   HelpCircle, 
@@ -13,13 +12,12 @@ import {
   Layers, 
   Tag, 
   ChevronRight,
-  BookmarkCheck,
-  Twitter,
-  Linkedin
+  BookmarkCheck
 } from "lucide-react";
 import { Sigla, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
 import { TIPO_LABELS } from "./HomeView";
+import { getSiglaBySlug, getFilteredSiglas, getBlogArticles } from "../data/dataService";
 
 interface SiglaDetailsViewProps {
   slug: string;
@@ -41,50 +39,43 @@ export default function SiglaDetailsView({
   const [error, setError] = useState(false);
   
   // Action status indicators
-  const [copiedLink, setCopiedLink] = useState(false);
   const [copiedMeaning, setCopiedMeaning] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
 
   // Load selected sigla data
   useEffect(() => {
-    async function loadSigla() {
+    function loadSigla() {
       try {
         setLoading(true);
         setError(false);
-        const res = await fetch(`/api/siglas/slug/${slug.toLowerCase()}`);
-        if (!res.ok) {
+        
+        const data = getSiglaBySlug(slug);
+        if (!data) {
           setError(true);
           setLoading(false);
           return;
         }
 
-        const data = await res.json();
         setSigla(data);
 
         // Fetch related siglas by category (same category, excluding the current one)
-        const allRes = await fetch(`/api/siglas?category=${encodeURIComponent(data.categoria)}`);
-        if (allRes.ok) {
-          const allData: Sigla[] = await allRes.json();
-          setRelated(allData.filter(item => item.id !== data.id).slice(0, 4));
-        }
+        const allData = getFilteredSiglas({ category: data.categoria });
+        setRelated(allData.filter(item => item.id !== data.id).slice(0, 4));
 
         // Fetch related blog articles
-        const blogRes = await fetch("/api/blog");
-        if (blogRes.ok) {
-          const blogData = await blogRes.json();
-          // Pick articles that match this category
-          const filteredBlog = blogData.filter((post: any) => 
-            post.categoria.toLowerCase() === data.categoria.toLowerCase()
-          ).slice(0, 2);
+        const blogData = getBlogArticles();
+        // Pick articles that match this category
+        const filteredBlog = blogData.filter((post: any) => 
+          post.categoria.toLowerCase() === data.categoria.toLowerCase()
+        ).slice(0, 2);
 
-          if (filteredBlog.length < 2) {
-            const otherBlog = blogData.filter((post: any) => 
-              post.categoria.toLowerCase() !== data.categoria.toLowerCase()
-            );
-            setRelatedPosts([...filteredBlog, ...otherBlog].slice(0, 2));
-          } else {
-            setRelatedPosts(filteredBlog);
-          }
+        if (filteredBlog.length < 2) {
+          const otherBlog = blogData.filter((post: any) => 
+            post.categoria.toLowerCase() !== data.categoria.toLowerCase()
+          );
+          setRelatedPosts([...filteredBlog, ...otherBlog].slice(0, 2));
+        } else {
+          setRelatedPosts(filteredBlog);
         }
       } catch (err) {
         console.error("Erro ao carregar sigla:", err);
@@ -96,14 +87,6 @@ export default function SiglaDetailsView({
 
     loadSigla();
   }, [slug]);
-
-  // Handle Share URL Copy
-  function handleCopyLink() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  }
 
   // Handle Copy Meaning
   function handleCopyMeaning() {
@@ -227,7 +210,7 @@ export default function SiglaDetailsView({
                 )}
               </div>
 
-              {/* Action buttons (Share, Copy) */}
+              {/* Action buttons (Copy) */}
               <div className="flex items-center space-x-2 self-start shrink-0">
                 <button
                   onClick={handleCopyMeaning}
@@ -236,15 +219,6 @@ export default function SiglaDetailsView({
                 >
                   {copiedMeaning ? <Check className="w-5 h-5 text-[#10B981]" /> : <Copy className="w-5 h-5" />}
                   <span className="text-xs font-bold hidden sm:inline">{copiedMeaning ? "Copiado!" : "Copiar"}</span>
-                </button>
-
-                <button
-                  onClick={handleCopyLink}
-                  className="p-2.5 bg-[#0D1628] border border-white/[0.08] text-[#B6C2D0] hover:text-white rounded-xl transition-all flex items-center space-x-1.5"
-                  title="Compartilhar link"
-                >
-                  {copiedLink ? <Check className="w-5 h-5 text-[#10B981]" /> : <Share2 className="w-5 h-5" />}
-                  <span className="text-xs font-bold hidden sm:inline">{copiedLink ? "Copiado!" : "Compartilhar"}</span>
                 </button>
               </div>
             </div>
@@ -353,34 +327,6 @@ export default function SiglaDetailsView({
                   Você pode explicar dizendo que {sigla.sigla} significa "{sigla.nome_completo}". Em termos simples: {sigla.descricao_curta}
                 </p>
               </div>
-            </div>
-          </div>
-
-          {/* Social media shares */}
-          <div className="p-5 sm:p-6 bg-[#0D1628] rounded-[20px] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-center sm:text-left">
-              <span className="text-xs font-bold text-white block">Achou útil o significado?</span>
-              <span className="text-[10px] text-[#B6C2D0]">Compartilhe este conhecimento com outros colegas de trabalho!</span>
-            </div>
-            <div className="flex space-x-2">
-              <a 
-                href={`https://twitter.com/intent/tweet?text=Descubra o significado de ${sigla.sigla} - ${sigla.nome_completo} em: ${window.location.href}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3.5 py-2 bg-[#111C31] hover:bg-[#162540] border border-white/[0.08] text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-all"
-              >
-                <Twitter className="w-3.5 h-3.5 fill-current text-[#3B82F6]" />
-                <span>Tweet</span>
-              </a>
-              <a 
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3.5 py-2 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-all"
-              >
-                <Linkedin className="w-3.5 h-3.5 fill-current" />
-                <span>Compartilhar</span>
-              </a>
             </div>
           </div>
         </div>
