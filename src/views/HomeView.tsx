@@ -10,9 +10,7 @@ import {
   Award, 
   Cpu, 
   BadgeCheck, 
-  Send, 
   Sparkles, 
-  CheckCircle,
   Clock,
   BookOpenText,
   BookmarkCheck,
@@ -27,7 +25,7 @@ import {
 import { Sigla, BlogArticle, PortalStats, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
 import { SiglaCardSkeleton } from "../components/Skeleton";
-import { getPortalStats, getBlogArticles, getFilteredSiglas, createCustomSigla } from "../data/dataService";
+import { getPortalStats, getBlogArticles, getFilteredSiglas } from "../data/dataService";
 
 export const TIPO_LABELS: Record<string, string> = {
   SIGLA: "Sigla",
@@ -40,7 +38,7 @@ export const TIPO_LABELS: Record<string, string> = {
 };
 
 const CATEGORY_INTRO_TEXTS: Record<string, string> = {
-  "Todas": "Seja bem-vindo ao maior portal de siglas corporativas do Brasil. Aqui você pode pesquisar, filtrar e aprender o significado de mais de 500 siglas e termos empresariais utilizados no mercado nacional e internacional. Navegue pelas nossas categorias, faça download do guia completo em PDF para estudar de forma offline, e domine os jargões e expressões mais influentes do mundo corporativo para alavancar a sua autoridade profissional.",
+  "Todas": "Seja bem-vindo ao maior portal de siglas corporativas do Brasil. Aqui você pode pesquisar, filtrar e aprender o significado de mais de 500 siglas e termos empresariais utilizados no mercado nacional e internacional. Navegue pelas nossas categorias, e domine os jargões e expressões mais influentes do mundo corporativo para alavancar a sua autoridade profissional.",
   "Marketing": "Se você trabalha com marketing digital, dominar as siglas corporativas é essencial para analisar o desempenho de campanhas e estratégias. Aprender siglas corporativas de marketing como CAC, LTV, CTR, ROI e CPA permite avaliar investimentos com precisão, estruturar relatórios dinâmicos de faturamento e se comunicar de forma clara com a diretoria.",
   "Recursos Humanos": "O setor de Recursos Humanos (RH) utiliza um conjunto específico de siglas corporativas para lidar com contratação, benefícios, legislação trabalhista e desenvolvimento de talentos. Nosso dicionário de siglas corporativas de RH ensina tudo sobre CLT, PJ, EVP, PDI, ATS e feedbacks 360, amparando profissionais e gestores de pessoas.",
   "Financeiro": "A linguagem de siglas corporativas financeiras é repleta de jargões que medem a rentabilidade e a saúde contábil de uma empresa. Compreender e aprender siglas corporativas financeiras como EBITDA, ROI, DRE, CAGR, CAPEX e OPEX é indispensável para apresentações de negócios, planejamento de orçamentos e tomada de decisões estratégicas de alto nível.",
@@ -80,15 +78,6 @@ export default function HomeView({
   const [selectedLetter, setSelectedLetter] = useState("Todas");
   const [sortOrder, setSortOrder] = useState("az"); // az, za, popular, recente
   const [isFocused, setIsFocused] = useState(false);
-
-  // Community Contribution States
-  const [contribSigla, setContribSigla] = useState("");
-  const [contribCategory, setContribCategory] = useState("Gestão");
-  const [contribNomeCompleto, setContribNomeCompleto] = useState("");
-  const [contribDescricaoCurta, setContribDescricaoCurta] = useState("");
-  const [contribSubmitting, setContribSubmitting] = useState(false);
-  const [contribSuccess, setContribSuccess] = useState(false);
-  const [contribError, setContribError] = useState("");
 
   // Categories list
   const categories = [
@@ -267,67 +256,12 @@ export default function HomeView({
 
   const showCategoryGrid = selectedCategory === "Todas" && searchQuery.trim() === "" && selectedLetter === "Todas" && !showFavorites;
 
-  // Submit community suggestion
-  async function handleContribSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!contribSigla.trim()) {
-      setContribError("Por favor, digite a sigla.");
-      return;
-    }
-    if (!contribNomeCompleto.trim()) {
-      setContribError("Por favor, digite o significado/nome completo.");
-      return;
-    }
-    if (!contribDescricaoCurta.trim()) {
-      setContribError("Por favor, digite uma descrição curta.");
-      return;
-    }
-
-    const payload = {
-      sigla: contribSigla.toUpperCase().trim(),
-      nome_completo: contribNomeCompleto.trim(),
-      descricao_curta: contribDescricaoCurta.trim(),
-      categoria: contribCategory,
-      tags: [contribCategory.toLowerCase(), "contribuição"]
-    };
-
-    try {
-      setContribSubmitting(true);
-      setContribError("");
-      
-      const savedSigla = createCustomSigla({
-        sigla: contribSigla.toUpperCase().trim(),
-        nome_completo: contribNomeCompleto.trim(),
-        descricao_curta: contribDescricaoCurta.trim(),
-        categoria: contribCategory,
-        tags: [contribCategory.toLowerCase(), "contribuição"]
-      });
-
-      // Add to local list so it renders immediately
-      setSiglas([savedSigla, ...siglas]);
-      setContribSuccess(true);
-      setContribSigla("");
-      setContribNomeCompleto("");
-      setContribDescricaoCurta("");
-      
-      // Update stats
-      const statsData = getPortalStats();
-      setStats(statsData);
-
-      setTimeout(() => setContribSuccess(false), 5000);
-    } catch (err: any) {
-      setContribError(err.message || "Erro ao enviar contribuição.");
-    } finally {
-      setContribSubmitting(false);
-    }
-  }
-
   return (
     <div className="space-y-12 pb-16 bg-[#07111F]">
       {/* 1. Hero Search Area */}
-      <section className="relative pt-12 sm:pt-20 pb-8 sm:pb-12 bg-[#07111F] transition-all duration-250">
+      <section className="relative pt-6 sm:pt-8 pb-8 sm:pb-12 bg-[#07111F] transition-all duration-250">
         <div className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full text-center">
-          <div className="pt-6 sm:pt-10 pb-4">
+          <div className="pt-2 sm:pt-4 pb-4">
             <h1 className="font-display font-extrabold text-4xl sm:text-6xl tracking-tight text-white leading-tight">
               Siglas Corporativas
             </h1>
@@ -648,93 +582,6 @@ export default function HomeView({
             </div>
           </div>
 
-          {/* B. Community Contribution form */}
-          <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] shadow-lg space-y-4">
-            <div>
-              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
-                <Award className="w-4.5 h-4.5 text-[#00C2A8]" />
-                <span>Sugestão Comunitária</span>
-              </h3>
-              <p className="text-xs text-[#B6C2D0] leading-relaxed mt-1">
-                Ajude-nos a crescer! Envie uma sigla nova com seu respectivo significado para o nosso acervo comunitário.
-              </p>
-            </div>
-
-            <form onSubmit={handleContribSubmit} className="space-y-3">
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#7C8AA5] mb-1">Sigla</label>
-                <input
-                  type="text"
-                  value={contribSigla}
-                  onChange={(e) => setContribSigla(e.target.value.toUpperCase())}
-                  placeholder="EX: LTV, CAGR, ROI"
-                  className="w-full text-xs p-2.5 bg-[#0D1628] text-white border border-white/[0.08] rounded-lg outline-none font-bold placeholder-[#7C8AA5] focus:ring-1 focus:ring-[#00C2A8] focus:border-[#00C2A8] transition-all"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#7C8AA5] mb-1">Área / Categoria</label>
-                <select
-                  value={contribCategory}
-                  onChange={(e) => setContribCategory(e.target.value)}
-                  className="w-full text-xs p-2.5 bg-[#0D1628] text-white border border-white/[0.08] rounded-lg outline-none focus:ring-1 focus:ring-[#00C2A8] focus:border-[#00C2A8] transition-all cursor-pointer"
-                >
-                  {categories.filter(c => c !== "Todas").map(c => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#7C8AA5] mb-1">Significado / Nome Completo</label>
-                <input
-                  type="text"
-                  value={contribNomeCompleto}
-                  onChange={(e) => setContribNomeCompleto(e.target.value)}
-                  placeholder="EX: Lifetime Value"
-                  className="w-full text-xs p-2.5 bg-[#0D1628] text-white border border-white/[0.08] rounded-lg outline-none placeholder-[#7C8AA5] focus:ring-1 focus:ring-[#00C2A8] focus:border-[#00C2A8] transition-all"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#7C8AA5] mb-1">Descrição Curta</label>
-                <textarea
-                  value={contribDescricaoCurta}
-                  onChange={(e) => setContribDescricaoCurta(e.target.value)}
-                  placeholder="EX: Métrica que estima todo o potencial de faturamento gerado por um cliente..."
-                  rows={2}
-                  className="w-full text-xs p-2.5 bg-[#0D1628] text-white border border-white/[0.08] rounded-lg outline-none placeholder-[#7C8AA5] focus:ring-1 focus:ring-[#00C2A8] focus:border-[#00C2A8] transition-all resize-none"
-                  required
-                />
-              </div>
-
-              {/* Submit button */}
-              <div className="pt-1">
-                <button
-                  type="submit"
-                  disabled={contribSubmitting || !contribSigla.trim()}
-                  className="w-full py-2.5 bg-[#00C2A8] text-[#07111F] hover:bg-[#00D8BB] font-bold text-xs rounded-lg transition-all duration-250 flex items-center justify-center space-x-1.5 disabled:opacity-50 shadow-md"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{contribSubmitting ? "Enviando..." : "Enviar Sugestão"}</span>
-                </button>
-              </div>
-
-              {contribError && (
-                <p className="text-[10px] text-[#EF4444] font-semibold leading-normal">{contribError}</p>
-              )}
-
-              {contribSuccess && (
-                <div className="p-2.5 bg-[#10B981]/15 text-[#10B981] rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 leading-normal border border-[#10B981]/25 animate-pulse">
-                  <CheckCircle className="w-4 h-4 shrink-0" />
-                  <span>Sigla adicionada com sucesso ao dicionário!</span>
-                </div>
-              )}
-            </form>
-          </div>
-
           {/* Ads sidebar */}
           <AdsPlaceholder position="sidebar" />
         </div>
@@ -836,15 +683,6 @@ export default function HomeView({
               </h3>
               <p className="text-xs text-[#B6C2D0] leading-relaxed">
                 Em vez de pesquisar termos isoladamente no Google, um dicionário de siglas corporativas focado centraliza o conhecimento técnico. Nosso portal é estruturado por categorias como *Financeiro, Marketing, Tecnologia e Logística*, facilitando a memorização progressiva dos jargões mais usados em cada departamento específico.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
-              <h3 className="font-display font-bold text-base text-white">
-                4. Como baixar o dicionário de siglas corporativas em PDF grátis?
-              </h3>
-              <p className="text-xs text-[#B6C2D0] leading-relaxed">
-                Para quem prefere estudar offline ou ter uma colinha impressa para consulta rápida durante chamadas importantes, disponibilizamos o recurso de **siglas corporativas aprender pdf**. Basta clicar em "Baixar Dicionário em PDF" no menu lateral para visualizar e salvar o guia profissional completo sem custo algum.
               </p>
             </div>
           </div>

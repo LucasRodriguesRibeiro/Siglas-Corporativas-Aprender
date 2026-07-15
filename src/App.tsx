@@ -232,7 +232,7 @@ export default function App() {
         <div className="text-center border-b-2 border-teal-600 pb-5 mb-6">
           <h1 className="text-3xl font-extrabold text-teal-800 tracking-tight">Dicionário de Siglas Corporativas</h1>
           <p className="text-sm text-slate-600 font-medium mt-1">
-            Guia Completo para Aprender Siglas Corporativas em Português e Inglês (PDF Grátis)
+            Guia Completo para Aprender Siglas Corporativas em Português e Inglês
           </p>
           <p className="text-[10px] text-slate-400 mt-1">Gerado gratuitamente por dicionariocorporativo.com.br</p>
         </div>

@@ -470,7 +470,7 @@ function injectSEOMetadata(html: string, urlPath: string): string {
   const baseUrl = process.env.APP_URL || "https://dicionariocorporativo.com.br";
   
   let title = "Siglas Corporativas - O Maior Dicionário Online do Brasil | SIGLAS CORPORATIVAS";
-  let desc = "Descubra o significado das siglas corporativas mais utilizadas no mercado empresarial. Aprenda termos de marketing, financeiro, tecnologia, RH e muito mais. Baixe grátis o dicionário completo em PDF.";
+  let desc = "Descubra o significado das siglas corporativas mais utilizadas no mercado empresarial. Aprenda termos de marketing, financeiro, tecnologia, RH e muito mais.";
   let canonical = `${baseUrl}${urlPath}`;
   let schemaString = "";
 

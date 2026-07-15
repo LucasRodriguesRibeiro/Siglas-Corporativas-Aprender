@@ -25,7 +25,7 @@ export default function Footer({ navigate, categories, onSelectCategory }: Foote
               </span>
             </div>
             <p className="text-sm text-[#B6C2D0] max-w-sm leading-relaxed">
-              O maior dicionário online de siglas corporativas do Brasil. Domine termos em português e inglês com tradução, pronúncia e baixe em PDF grátis.
+              O maior dicionário online de siglas corporativas do Brasil. Domine termos em português e inglês com tradução e pronúncia.
             </p>
             <div className="flex space-x-3 text-xs text-[#7C8AA5]">
               <span className="flex items-center space-x-1">
