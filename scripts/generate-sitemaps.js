@@ -11,7 +11,9 @@ const baseUrl = "https://siglascorporativasaprender.vercel.app";
 const dbPath = path.join(__dirname, "..", "src", "data", "db.json");
 const blogDbPath = path.join(__dirname, "..", "src", "data", "blog_db.json");
 const sitemapPath = path.join(__dirname, "..", "public", "sitemap.xml");
+const rootSitemapPath = path.join(__dirname, "..", "sitemap.xml");
 const robotsPath = path.join(__dirname, "..", "public", "robots.txt");
+const rootRobotsPath = path.join(__dirname, "..", "robots.txt");
 
 try {
   console.log("Iniciando a geração estática do sitemap.xml...");
@@ -76,7 +78,8 @@ try {
   }
 
   fs.writeFileSync(sitemapPath, xml, "utf-8");
-  console.log(`Sitemap gerado com sucesso com ${siglas.length + blog.length + 9} URLs em ${sitemapPath}`);
+  fs.writeFileSync(rootSitemapPath, xml, "utf-8");
+  console.log(`Sitemap gerado com sucesso com ${siglas.length + blog.length + 9} URLs em ${sitemapPath} e ${rootSitemapPath}`);
 
   // Also generate robots.txt statically
   const robotsContent = `User-agent: *
@@ -84,7 +87,8 @@ Allow: /
 Sitemap: ${baseUrl}/sitemap.xml
 `;
   fs.writeFileSync(robotsPath, robotsContent, "utf-8");
-  console.log(`robots.txt gerado com sucesso em ${robotsPath}`);
+  fs.writeFileSync(rootRobotsPath, robotsContent, "utf-8");
+  console.log(`robots.txt gerado com sucesso em ${robotsPath} e ${rootRobotsPath}`);
 
 } catch (err) {
   console.error("Erro ao gerar arquivos de SEO estáticos:", err);

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://siglascorporativasaprender.vercel.app/sitemap.xml
