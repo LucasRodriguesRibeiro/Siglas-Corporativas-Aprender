@@ -411,7 +411,7 @@ app.get("/api/blog/:slug", (req, res) => {
 
 // Dynamic XML Sitemap Generator
 app.get("/sitemap.xml", (req, res) => {
-  const baseUrl = process.env.APP_URL || "https://dicionariocorporativo.com.br";
+  const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.vercel.app";
   
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -455,7 +455,7 @@ app.get("/sitemap.xml", (req, res) => {
 
 // Robots.txt
 app.get("/robots.txt", (req, res) => {
-  const baseUrl = process.env.APP_URL || "https://dicionariocorporativo.com.br";
+  const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.vercel.app";
   const content = `User-agent: *
 Allow: /
 Sitemap: ${baseUrl}/sitemap.xml
@@ -468,7 +468,7 @@ Sitemap: ${baseUrl}/sitemap.xml
 // DYNAMIC SEO INJECTION HELPER
 // ----------------------------------------------------
 function injectSEOMetadata(html: string, urlPath: string): string {
-  const baseUrl = process.env.APP_URL || "https://dicionariocorporativo.com.br";
+  const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.vercel.app";
   
   let title = "Siglas Corporativas - O Maior Dicionário Online do Brasil | SIGLAS CORPORATIVAS";
   let desc = "Descubra o significado das siglas corporativas mais utilizadas no mercado empresarial. Aprenda termos de marketing, financeiro, tecnologia, RH e muito mais.";
