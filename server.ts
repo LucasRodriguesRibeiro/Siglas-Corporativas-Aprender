@@ -436,9 +436,10 @@ app.get("/sitemap.xml", (req, res) => {
     xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
   });
 
-  // Add all siglas
+  // Add all siglas using their precise type prefix (sigla, termo, cargo, etc.) for accurate routing
   siglasList.forEach(s => {
-    xml += `  <url>\n    <loc>${baseUrl}/sigla/${s.slug}</loc>\n    <lastmod>${s.atualizado_em.split("T")[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+    const prefix = s.tipo?.toLowerCase() || "sigla";
+    xml += `  <url>\n    <loc>${baseUrl}/${prefix}/${s.slug}</loc>\n    <lastmod>${s.atualizado_em.split("T")[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
   });
 
   // Add all blog posts
@@ -514,9 +515,12 @@ function injectSEOMetadata(html: string, urlPath: string): string {
 
   const categorySeo = CATEGORY_SEO_INFO[urlPath];
 
-  // 1. Sigla Route
-  if (urlPath.startsWith("/sigla/")) {
-    const slug = urlPath.replace("/sigla/", "").split(/[?#]/)[0];
+  // 1. Sigla / Termo / Cargo / Departamento / Metodologia / Ferramenta / Conceito Route
+  const siglaPrefixes = ["/sigla/", "/termo/", "/cargo/", "/departamento/", "/metodologia/", "/ferramenta/", "/conceito/"];
+  const matchedPrefix = siglaPrefixes.find(p => urlPath.startsWith(p));
+
+  if (matchedPrefix) {
+    const slug = urlPath.replace(matchedPrefix, "").split(/[?#]/)[0];
     const sigla = siglasList.find(s => s.slug === slug.toLowerCase());
     if (sigla) {
       title = `${sigla.sigla} - Significado, Tradução e Exemplo | SIGLAS CORPORATIVAS`;
