@@ -83,7 +83,15 @@ export default function App() {
     "/siglas-tecnologia": "Tecnologia",
     "/siglas-vendas": "Vendas",
     "/siglas-logistica": "Logística",
-    "/siglas-gestao": "Gestão"
+    "/siglas-gestao": "Gestão",
+    "/siglas-contabilidade": "Contabilidade",
+    "/siglas-juridicas": "Jurídico",
+    "/siglas-saude": "Saúde",
+    "/siglas-projetos": "Projetos",
+    "/siglas-administrativas": "Administrativo",
+    "/siglas-comerciais": "Comercial",
+    "/siglas-engenharia": "Engenharia",
+    "/siglas-compras": "Compras"
   };
 
   const CATEGORY_TO_PATH: Record<string, string> = {
@@ -94,6 +102,14 @@ export default function App() {
     "Vendas": "/siglas-vendas",
     "Logística": "/siglas-logistica",
     "Gestão": "/siglas-gestao",
+    "Contabilidade": "/siglas-contabilidade",
+    "Jurídico": "/siglas-juridicas",
+    "Saúde": "/siglas-saude",
+    "Projetos": "/siglas-projetos",
+    "Administrativo": "/siglas-administrativas",
+    "Comercial": "/siglas-comerciais",
+    "Engenharia": "/siglas-engenharia",
+    "Compras": "/siglas-compras",
     "Todas": "/"
   };
 
@@ -283,9 +299,27 @@ export default function App() {
           })}
         </div>
 
-        <div className="text-center pt-6 border-t border-slate-200 text-[10px] text-slate-400">
+        <div className="text-center pt-6 border-t border-slate-200 text-[10px] text-slate-400 space-y-1">
           <p>© {new Date().getFullYear()} Dicionário Corporativo (siglascorporativasaprender.vercel.app). Todos os direitos reservados.</p>
           <p>O maior dicionário online para aprender linguagem de siglas corporativas em português e inglês.</p>
+          <p className="pt-1 text-[11px] text-slate-500">
+            Desenvolvido por{" "}
+            <a 
+              href="https://www.instagram.com/lucasribeirotrafego/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="font-semibold text-teal-600 hover:text-teal-700 hover:underline"
+            >
+              @lucasribeirotrafego
+            </a>{" "}
+            • E-mail:{" "}
+            <a 
+              href="mailto:agencialucasrodrigues@gmail.com" 
+              className="text-slate-600 hover:text-slate-800 hover:underline"
+            >
+              agencialucasrodrigues@gmail.com
+            </a>
+          </p>
         </div>
       </div>
     </div>

@@ -82,13 +82,33 @@ export default function Footer({ navigate, categories, onSelectCategory }: Foote
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#7C8AA5]">
-          <p>
-            &copy; {currentYear} Dicionário Corporativo. Desenvolvido para o ambiente corporativo brasileiro de alta performance.
-          </p>
-          <p className="flex items-center space-x-1 mt-2 sm:mt-0">
+        <div className="border-t border-white/[0.06] mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#7C8AA5] gap-4">
+          <div className="space-y-1 text-center sm:text-left">
+            <p>
+              &copy; {currentYear} Dicionário Corporativo. Todos os direitos reservados.
+            </p>
+            <p className="text-[11px] text-[#9FB3C8]">
+              Desenvolvido por{" "}
+              <a 
+                href="https://www.instagram.com/lucasribeirotrafego/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="font-semibold text-[#00C2A8] hover:underline"
+              >
+                @lucasribeirotrafego
+              </a>{" "}
+              • E-mail:{" "}
+              <a 
+                href="mailto:agencialucasrodrigues@gmail.com" 
+                className="hover:text-white hover:underline"
+              >
+                agencialucasrodrigues@gmail.com
+              </a>
+            </p>
+          </div>
+          <p className="flex items-center space-x-1 mt-2 sm:mt-0 text-[11px]">
             <span>Feito com</span>
-            <Heart className="w-3 h-3 text-[#EF4444] fill-current" />
+            <Heart className="w-3 h-3 text-[#EF4444] fill-current animate-pulse" />
             <span>para escalar seu vocabulário.</span>
           </p>
         </div>
