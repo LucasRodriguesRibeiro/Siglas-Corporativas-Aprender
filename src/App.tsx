@@ -57,8 +57,17 @@ export default function App() {
   // Envia visualização de página ao Google Analytics em cada navegação interna
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).gtag) {
+      // Atualiza as configurações de página
       (window as any).gtag("config", "G-4V7D568KQJ", {
         page_path: path,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
+      // Dispara explicitamente o evento de visualização de página no GA4
+      (window as any).gtag("event", "page_view", {
+        page_path: path,
+        page_location: window.location.href,
+        page_title: document.title,
       });
     }
   }, [path]);
