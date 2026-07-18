@@ -54,6 +54,15 @@ function Custom404View({ navigate }: { navigate: (to: string) => void }) {
 export default function App() {
   const { path, navigate } = usePath();
 
+  // Envia visualização de página ao Google Analytics em cada navegação interna
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("config", "G-4V7D568KQJ", {
+        page_path: path,
+      });
+    }
+  }, [path]);
+
   // Dark Mode State
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
