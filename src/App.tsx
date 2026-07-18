@@ -259,7 +259,7 @@ export default function App() {
           <p className="text-sm text-slate-600 font-medium mt-1">
             Guia Completo para Aprender Siglas Corporativas em Português e Inglês
           </p>
-          <p className="text-[10px] text-slate-400 mt-1">Gerado gratuitamente por siglascorporativasaprender.vercel.app</p>
+          <p className="text-[10px] text-slate-400 mt-1">Gerado gratuitamente por siglascorporativasaprender.com.br</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
@@ -309,7 +309,7 @@ export default function App() {
         </div>
 
         <div className="text-center pt-6 border-t border-slate-200 text-[10px] text-slate-400 space-y-1">
-          <p>© {new Date().getFullYear()} Dicionário Corporativo (siglascorporativasaprender.vercel.app). Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Dicionário Corporativo (siglascorporativasaprender.com.br). Todos os direitos reservados.</p>
           <p>O maior dicionário online para aprender linguagem de siglas corporativas em português e inglês.</p>
           <p className="pt-1 text-[11px] text-slate-500">
             Desenvolvido por{" "}

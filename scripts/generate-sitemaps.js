@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const baseUrl = "https://siglascorporativasaprender.vercel.app";
+const baseUrl = "https://siglascorporativasaprender.com.br";
 
 // Paths
 const dbPath = path.join(__dirname, "..", "src", "data", "db.json");
