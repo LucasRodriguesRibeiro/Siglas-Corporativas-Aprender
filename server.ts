@@ -756,6 +756,16 @@ async function startServer() {
     res.type("text/html").send("google-site-verification: google072a8f187fc0c605.html");
   });
 
+  // Explicit route for Google AdSense ads.txt
+  app.get("/ads.txt", (req, res) => {
+    res.type("text/plain").send("google.com, pub-7149100665310787, DIRECT, f08c47fec0942fa0\n");
+  });
+
+  // Explicit route for robots.txt
+  app.get("/robots.txt", (req, res) => {
+    res.type("text/plain").send("User-agent: *\nAllow: /\n\nUser-agent: Mediapartners-Google\nAllow: /\n\nSitemap: https://siglascorporativasaprender.com.br/sitemap.xml\n");
+  });
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
