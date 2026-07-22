@@ -29,17 +29,46 @@ export interface Sigla {
   nome_portugues?: string;
 }
 
+export interface FAQItem {
+  pergunta: string;
+  resposta: string;
+}
+
+export interface BlogArticleExplicacao {
+  significado: string;
+  origem: string;
+  onde_utilizado: string;
+  exemplos_reais: string[];
+  vantagens: string[];
+  cuidados: string[];
+  curiosidades: string[];
+}
+
+export interface BlogArticleErroComum {
+  erro: string;
+  explicacao: string;
+}
+
 export interface BlogArticle {
   id: string;
   slug: string;
   titulo: string;
+  subtitulo: string;
   descricao: string;
-  conteudo: string;
+  introducao_direta: string;
   autor: string;
   data: string;
   categoria: string;
   tags: string[];
   tempo_leitura: string;
+  explicacao: BlogArticleExplicacao;
+  exemplos_praticos: string[];
+  quando_utilizar: string[];
+  erros_comuns: BlogArticleErroComum[];
+  faqs: FAQItem[];
+  siglas_relacionadas_slugs: string[];
+  termos_relacionados_slugs?: string[];
+  conteudo?: string;
 }
 
 export interface PortalStats {

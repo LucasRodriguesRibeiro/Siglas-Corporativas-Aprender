@@ -1,6 +1,6 @@
 import { getSiglasSeed, Sigla } from "./siglas_seed";
-import { blogArticles, BlogArticle } from "./blog_seed";
-import { PortalStats } from "../types";
+import { blogArticles } from "./blog_seed";
+import { PortalStats, BlogArticle } from "../types";
 
 // Key for browser localStorage persistence
 const CUSTOM_SIGLAS_KEY = "dicionario_custom_siglas";

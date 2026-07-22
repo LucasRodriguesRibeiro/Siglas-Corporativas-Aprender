@@ -95,6 +95,11 @@ export default function App() {
 
   // Maps for SEO Friendly URL category routing
   const PATH_TO_CATEGORY: Record<string, string> = {
+    "/siglas-corporativas": "Todas",
+    "/dicionario-corporativo": "Todas",
+    "/glossario-corporativo": "Todas",
+    "/termos-corporativos": "Todas",
+    "/cargos-corporativos": "Todas",
     "/siglas-marketing": "Marketing",
     "/siglas-rh": "Recursos Humanos",
     "/siglas-financeiras": "Financeiro",

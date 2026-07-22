@@ -5,7 +5,8 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { getSiglasSeed, Sigla } from "./src/data/siglas_seed.ts";
-import { blogArticles, BlogArticle } from "./src/data/blog_seed.ts";
+import { blogArticles } from "./src/data/blog_seed.ts";
+import { BlogArticle } from "./src/types.ts";
 
 dotenv.config();
 
@@ -45,14 +46,11 @@ function initializeDB() {
     }
 
     // Blog DB
-    if (fs.existsSync(BLOG_DB_PATH)) {
-      console.log("Carregando blog existente...");
-      const data = fs.readFileSync(BLOG_DB_PATH, "utf-8");
-      blogList = JSON.parse(data);
-    } else {
-      console.log("Iniciando sementeira do blog...");
-      blogList = blogArticles;
+    blogList = blogArticles;
+    try {
       fs.writeFileSync(BLOG_DB_PATH, JSON.stringify(blogList, null, 2), "utf-8");
+    } catch (e) {
+      console.error("Erro ao salvar blog_db.json:", e);
     }
     console.log(`Banco inicializado com sucesso. ${siglasList.length} siglas e ${blogList.length} artigos carregados.`);
   } catch (err) {
@@ -422,18 +420,31 @@ app.get("/sitemap.xml", (req, res) => {
   // Add Blog Home
   xml += `  <url>\n    <loc>${baseUrl}/blog</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
 
-  // Add SEO Friendly Category Pages
+  // Add SEO Friendly Category & Pillar Pages
   const categoryPaths = [
+    "/siglas-corporativas",
+    "/dicionario-corporativo",
+    "/glossario-corporativo",
+    "/termos-corporativos",
+    "/cargos-corporativos",
     "/siglas-marketing",
     "/siglas-rh",
     "/siglas-financeiras",
     "/siglas-tecnologia",
     "/siglas-vendas",
     "/siglas-logistica",
-    "/siglas-gestao"
+    "/siglas-gestao",
+    "/siglas-contabilidade",
+    "/siglas-juridicas",
+    "/siglas-saude",
+    "/siglas-projetos",
+    "/siglas-administrativas",
+    "/siglas-comerciais",
+    "/siglas-engenharia",
+    "/siglas-compras"
   ];
   categoryPaths.forEach(path => {
-    xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
   });
 
   // Add all siglas using their precise type prefix (sigla, termo, cargo, etc.) for accurate routing
@@ -476,6 +487,31 @@ function injectSEOMetadata(html: string, urlPath: string): string {
   let schemaString = "";
 
   const CATEGORY_SEO_INFO: Record<string, { title: string; desc: string; categoryName: string }> = {
+    "/siglas-corporativas": {
+      categoryName: "Todas",
+      title: "Siglas Corporativas | Dicionário Completo de Siglas Empresariais",
+      desc: "Aprenda e consulte gratuitamente o significado de mais de 500 siglas corporativas em português e inglês para acelerar sua carreira profissional."
+    },
+    "/dicionario-corporativo": {
+      categoryName: "Todas",
+      title: "Dicionário Corporativo Gratuito | O Maior Portal de Linguagem Empresarial",
+      desc: "O maior dicionário corporativo online e gratuito do Brasil. Pesquise e aprenda o significado de siglas empresariais, termos técnicos, cargos e metodologias."
+    },
+    "/glossario-corporativo": {
+      categoryName: "Todas",
+      title: "Glossário Corporativo Completo | Termos, Siglas e Expressões de Negócios",
+      desc: "Glossário corporativo gratuito com explicações objetivas, exemplos práticos e pronúncia correta de siglas e expressões utilizadas no mercado empresarial."
+    },
+    "/termos-corporativos": {
+      categoryName: "Todas",
+      title: "Termos Corporativos e Expressões Empresariais - Dicionário Gratuito",
+      desc: "Conheça o significado dos principais termos corporativos e jargões empresariais: Stakeholder, Onboarding, Compliance, Benchmark, Pitch, Turnover e mais."
+    },
+    "/cargos-corporativos": {
+      categoryName: "Todas",
+      title: "Cargos Corporativos e Executivos (C-Level) - Dicionário e Significados",
+      desc: "Guia definitivo de cargos corporativos e posições C-Level: CEO, CFO, COO, CTO, CMO, CPO, SDR, Head de Operações. Saiba funções e hierarquias."
+    },
     "/siglas-marketing": {
       categoryName: "Marketing",
       title: "Siglas Corporativas de Marketing - Significado e Conceitos | SIGLAS CORPORATIVAS",
@@ -578,7 +614,7 @@ function injectSEOMetadata(html: string, urlPath: string): string {
     const slug = urlPath.replace("/blog/", "").split(/[?#]/)[0];
     const article = blogList.find(a => a.slug === slug.toLowerCase());
     if (article) {
-      title = `${article.titulo} | Blog SIGLAS CORPORATIVAS`;
+      title = `${article.titulo} | Blog Siglas Corporativas`;
       desc = article.descricao;
 
       const blogSchema = {
@@ -607,9 +643,27 @@ function injectSEOMetadata(html: string, urlPath: string): string {
         ]
       };
 
+      let faqSchemaTag = "";
+      if (article.faqs && article.faqs.length > 0) {
+        const faqSchema = {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": article.faqs.map(f => ({
+            "@type": "Question",
+            "name": f.pergunta,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": f.resposta
+            }
+          }))
+        };
+        faqSchemaTag = `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`;
+      }
+
       schemaString = `
         <script type="application/ld+json">${JSON.stringify(blogSchema)}</script>
         <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
+        ${faqSchemaTag}
       `;
     }
   }
@@ -705,14 +759,16 @@ async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: "custom",
     });
 
-    // Use vite's middlewares to compile client-side React files
-    app.use(vite.middlewares);
-
-    // Dynamic SPA Route server-side interception for SEO injection
+    // Custom HTML Handler with SEO Injection for SPA routes
     app.get("*", async (req, res, next) => {
+      // If it looks like a static asset request, let vite.middlewares handle it
+      if (req.originalUrl.includes(".") && !req.originalUrl.endsWith(".html")) {
+        return next();
+      }
+
       const url = req.originalUrl;
       try {
         let template = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf-8");
@@ -726,6 +782,9 @@ async function startServer() {
         next(e);
       }
     });
+
+    // Use vite's middlewares to compile client-side JS/CSS/assets
+    app.use(vite.middlewares);
   } else {
     // Production Mode: static files from dist
     const distPath = path.join(__dirname, "dist");
