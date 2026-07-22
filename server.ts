@@ -470,8 +470,8 @@ Sitemap: ${baseUrl}/sitemap.xml
 function injectSEOMetadata(html: string, urlPath: string): string {
   const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.com.br";
   
-  let title = "Siglas Corporativas - O Maior Dicionário Online do Brasil | SIGLAS CORPORATIVAS";
-  let desc = "Descubra o significado das siglas corporativas mais utilizadas no mercado empresarial. Aprenda termos de marketing, financeiro, tecnologia, RH e muito mais.";
+  let title = "Siglas Corporativas | Dicionário Corporativo Gratuito";
+  let desc = "Consulte gratuitamente o significado de mais de 500 siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mundo corporativo.";
   let canonical = `${baseUrl}${urlPath}`;
   let schemaString = "";
 
@@ -633,11 +633,16 @@ function injectSEOMetadata(html: string, urlPath: string): string {
     const portalSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "SIGLAS CORPORATIVAS",
+      "name": "Siglas Corporativas",
+      "alternateName": ["Dicionário Corporativo Gratuito", "Dicionário de Siglas Corporativas"],
       "url": baseUrl,
+      "description": desc,
       "potentialAction": {
         "@type": "SearchAction",
-        "target": `${baseUrl}/?search={search_term_string}`,
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${baseUrl}/?search={search_term_string}`
+        },
         "query-input": "required name=search_term_string"
       }
     };
@@ -646,27 +651,46 @@ function injectSEOMetadata(html: string, urlPath: string): string {
 
   // Replace default elements in template index.html
   let processed = html;
-  processed = processed.replace("<title>My Google AI Studio App</title>", `<title>${title}</title>`);
   
-  const seoHeadContent = `
-    <meta name="description" content="${desc}" />
-    <link rel="canonical" href="${canonical}" />
-    <!-- OpenGraph Meta Tags -->
-    <meta property="og:title" content="${title}" />
-    <meta property="og:description" content="${desc}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="${canonical}" />
-    <meta property="og:image" content="${baseUrl}/assets/cover.png" />
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${title}" />
-    <meta name="twitter:description" content="${desc}" />
-    <meta name="twitter:image" content="${baseUrl}/assets/cover.png" />
-    <!-- Structured Data -->
-    ${schemaString}
-  `;
+  if (/<title>.*?<\/title>/i.test(processed)) {
+    processed = processed.replace(/<title>.*?<\/title>/i, `<title>${title}</title>`);
+  } else {
+    processed = processed.replace("</head>", `<title>${title}</title></head>`);
+  }
 
-  return processed.replace("</head>", `${seoHeadContent}</head>`);
+  if (/<meta\s+name=["']description["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+name=["']description["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="description" content="${desc}" />`);
+  }
+
+  if (/<link\s+rel=["']canonical["']\s+href=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<link\s+rel=["']canonical["']\s+href=["'].*?["']\s*\/?>/i, `<link rel="canonical" href="${canonical}" />`);
+  }
+
+  if (/<meta\s+property=["']og:title["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+property=["']og:title["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
+  }
+
+  if (/<meta\s+property=["']og:description["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+property=["']og:description["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:description" content="${desc}" />`);
+  }
+
+  if (/<meta\s+property=["']og:url["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+property=["']og:url["']\s+content=["'].*?["']\s*\/?>/i, `<meta property="og:url" content="${canonical}" />`);
+  }
+
+  if (/<meta\s+name=["']twitter:title["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+name=["']twitter:title["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:title" content="${title}" />`);
+  }
+
+  if (/<meta\s+name=["']twitter:description["']\s+content=["'].*?["']\s*\/?>/i.test(processed)) {
+    processed = processed.replace(/<meta\s+name=["']twitter:description["']\s+content=["'].*?["']\s*\/?>/i, `<meta name="twitter:description" content="${desc}" />`);
+  }
+
+  if (schemaString) {
+    processed = processed.replace("</head>", `${schemaString}\n</head>`);
+  }
+
+  return processed;
 }
 
 // ----------------------------------------------------

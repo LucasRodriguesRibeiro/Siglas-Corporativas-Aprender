@@ -266,7 +266,7 @@ export default function HomeView({
               Siglas Corporativas
             </h1>
             <p className="text-base sm:text-lg text-[#B6C2D0] font-medium max-w-3xl mx-auto leading-relaxed mt-6 sm:mt-8">
-              Aprenda rapidamente o significado das principais siglas utilizadas por empresas, profissionais e estudantes.
+              Consulte gratuitamente o significado de siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mercado de trabalho.
             </p>
           </div>
 
@@ -643,46 +643,79 @@ export default function HomeView({
         </section>
       )}
 
-      {/* 4. Semantic SEO Learning Guide Section */}
+      {/* 4. Semantic SEO Content Section */}
       <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full py-14 border-t border-white/[0.08] transition-all mt-12 sm:mt-16">
-        <div className="max-w-3xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-10">
           <div className="text-center space-y-3">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#111C31] border border-white/[0.08] text-[#00C2A8]">
-              Guia Completo de Aprendizado
+              Dicionário Corporativo Gratuito
             </span>
             <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight leading-tight">
-              Como Aprender a Linguagem de Siglas Corporativas?
+              O que são Siglas Corporativas e por que Aprender a Linguagem do Mercado?
             </h2>
-            <p className="text-sm text-[#B6C2D0] max-w-xl mx-auto mt-2 leading-relaxed">
-              Entenda a importância de dominar o jargão do mercado corporativo internacional e saiba como acelerar seu aprendizado.
+            <p className="text-sm text-[#B6C2D0] max-w-2xl mx-auto mt-2 leading-relaxed">
+              Consulte gratuitamente o significado de siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no ambiente de trabalho.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
-              <h3 className="font-display font-bold text-base text-white">
-                1. O que é a linguagem de siglas corporativas?
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>O que são siglas corporativas?</span>
               </h3>
               <p className="text-xs text-[#B6C2D0] leading-relaxed">
-                No ambiente corporativo moderno, siglas como **OKR**, **KPI**, **LTV** e **CAC** funcionam como uma linguagem de siglas corporativas própria. Elas são amplamente utilizadas para resumir métricas complexas, cargos executivos (como **CEO**, **CFO**) e metodologias de gestão rápida de processos. Aprender esses termos é fundamental para compreender apresentações de negócios, relatórios financeiros e e-mails de liderança.
+                As <strong className="text-white">siglas corporativas</strong> são abreviações formadas pelas letras iniciais de expressões muito utilizadas no ambiente de negócios. Elas representam conceitos de gestão (como <strong className="text-white">OKR</strong> e <strong className="text-white">KPI</strong>), métricas financeiras (<strong className="text-white">EBITDA</strong>, <strong className="text-white">ROI</strong>), estratégias de marketing (<strong className="text-white">CAC</strong>, <strong className="text-white">LTV</strong>) e <strong className="text-white">cargos corporativos</strong> executivos (como <strong className="text-white">CEO</strong>, <strong className="text-white">CFO</strong> e <strong className="text-white">CTO</strong>). Elas aceleram a comunicação entre equipes e em relatórios.
               </p>
             </div>
 
             <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
-              <h3 className="font-display font-bold text-base text-white">
-                2. Como aprender siglas corporativas em português e inglês?
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>Por que a linguagem corporativa é importante?</span>
               </h3>
               <p className="text-xs text-[#B6C2D0] leading-relaxed">
-                Muitas das expressões mais comuns têm origem estrangeira. Por isso, oferecemos um **dicionário de siglas corporativas** que ajuda você a aprender termos em português e inglês de forma unificada. Estudar as definições acompanhadas de suas traduções e equivalentes diretos no Brasil permite que você se sinta seguro tanto em reuniões locais quanto em negociações com multinacionais estrangeiras.
+                Compreender a <strong className="text-white">linguagem corporativa</strong> e o <strong className="text-white">significado das siglas corporativas</strong> é essencial para evitar ruídos de comunicação e demonstrar autoridade. A rápida expansão de startups e multinacionais trouxe dezenas de <strong className="text-white">siglas empresariais</strong> e termos em inglês para a rotina diária das empresas. Dominá-las permite acompanhar reuniões estratégicas com clareza e segurança.
               </p>
             </div>
 
             <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
-              <h3 className="font-display font-bold text-base text-white">
-                3. Por que usar um dicionário corporativo para aprender?
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>Como utilizar as siglas no dia a dia do trabalho?</span>
               </h3>
               <p className="text-xs text-[#B6C2D0] leading-relaxed">
-                Em vez de pesquisar termos isoladamente no Google, um dicionário de siglas corporativas focado centraliza o conhecimento técnico. Nosso portal é estruturado por categorias como *Financeiro, Marketing, Tecnologia e Logística*, facilitando a memorização progressiva dos jargões mais usados em cada departamento específico.
+                Para aplicar o aprendizado, utilize as siglas no contexto correto ao elaborar e-mails, relatórios executivos e apresentações de resultados. Saber o momento exato de empregar jargões como <strong className="text-white">B2B</strong>, <strong className="text-white">SLA</strong> ou <strong className="text-white">CRM</strong> transmite alto grau de profissionalismo e alinhamento com os objetivos da organização.
+              </p>
+            </div>
+
+            <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>Diferença entre siglas e termos corporativos</span>
+              </h3>
+              <p className="text-xs text-[#B6C2D0] leading-relaxed">
+                Enquanto as <strong className="text-white">siglas corporativas</strong> são abreviações formadas por letras iniciais (ex: <em className="text-white">CLT, DRE, API</em>), os <strong className="text-white">termos corporativos</strong> são palavras ou expressões inteiras, muitas vezes importadas do inglês (ex: <em className="text-white">Pitch, Feedback, Social Selling, Merchandising, Mindset</em>). Nosso portal combina ambos em um único lugar.
+              </p>
+            </div>
+
+            <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>Como o portal ajuda profissionais e estudantes?</span>
+              </h3>
+              <p className="text-xs text-[#B6C2D0] leading-relaxed">
+                Nosso <strong className="text-white">dicionário corporativo gratuito</strong> serve como fonte confiável para quem deseja <strong className="text-white">aprender siglas corporativas</strong> de forma rápida. Seja para se preparar para entrevistas de emprego, entender tarefas da faculdade ou comunicar-se com eficiência no trabalho, o portal oferece explicações detalhadas, pronúncia e exemplos de aplicação prática.
+              </p>
+            </div>
+
+            <div className="p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] hover:bg-[#162540] transition-all duration-250 space-y-3">
+              <h3 className="font-display font-bold text-base text-white flex items-center space-x-2">
+                <span className="text-[#00C2A8]">●</span>
+                <span>Benefícios de utilizar um glossário corporativo gratuito</span>
+              </h3>
+              <p className="text-xs text-[#B6C2D0] leading-relaxed">
+                Consultar um <strong className="text-white">glossário corporativo</strong> organizado por categorias economiza tempo e garante precisão técnica. Em vez de buscas dispersas no Google, você tem acesso a um <strong className="text-white">dicionário corporativo</strong> atualizado e completo para consultar sempre que se deparar com uma nova sigla ou expressão empresarial.
               </p>
             </div>
           </div>

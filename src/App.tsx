@@ -131,13 +131,15 @@ export default function App() {
     "Todas": "/"
   };
 
-  // Sync selectedCategory with the URL path
+  // Sync selectedCategory and document.title with the URL path
   useEffect(() => {
     const matchedCategory = PATH_TO_CATEGORY[path];
     if (matchedCategory) {
       setSelectedCategory(matchedCategory);
+      document.title = `Siglas Corporativas de ${matchedCategory} - Dicionário Gratuito`;
     } else if (path === "/") {
       setSelectedCategory("Todas");
+      document.title = "Siglas Corporativas | Dicionário Corporativo Gratuito";
     }
   }, [path]);
 
