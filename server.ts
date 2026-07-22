@@ -762,13 +762,11 @@ async function startServer() {
       appType: "custom",
     });
 
+    // Use vite's middlewares to compile client-side JS/CSS/assets first
+    app.use(vite.middlewares);
+
     // Custom HTML Handler with SEO Injection for SPA routes
     app.get("*", async (req, res, next) => {
-      // If it looks like a static asset request, let vite.middlewares handle it
-      if (req.originalUrl.includes(".") && !req.originalUrl.endsWith(".html")) {
-        return next();
-      }
-
       const url = req.originalUrl;
       try {
         let template = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf-8");
@@ -782,9 +780,6 @@ async function startServer() {
         next(e);
       }
     });
-
-    // Use vite's middlewares to compile client-side JS/CSS/assets
-    app.use(vite.middlewares);
   } else {
     // Production Mode: static files from dist
     const distPath = path.join(__dirname, "dist");
