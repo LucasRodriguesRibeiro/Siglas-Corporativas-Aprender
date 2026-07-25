@@ -35,8 +35,8 @@ const POPULAR_CATEGORIES = ["Marketing", "Recursos Humanos", "Financeiro", "Tecn
 export default function CorporateDictionary({
   navigate,
   className = "",
-  title = "🔍 Dicionário Corporativo",
-  subtitle = "Pesquise gratuitamente centenas de siglas, termos corporativos, cargos e metodologias."
+  title = "Pesquise no Dicionário Corporativo",
+  subtitle = "Encontre gratuitamente siglas, termos, cargos e metodologias empresariais."
 }: CorporateDictionaryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -174,11 +174,18 @@ export default function CorporateDictionary({
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="pr-4 text-xs font-semibold text-[#7C8AA5] hover:text-white transition-colors duration-250"
+              className="px-2 text-xs font-semibold text-[#7C8AA5] hover:text-white transition-colors duration-250"
             >
               Limpar
             </button>
           )}
+          <button
+            type="submit"
+            className="mr-1.5 px-4 py-2 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-bold text-sm rounded-xl transition-all duration-250 flex items-center space-x-1.5 shadow-md shrink-0"
+          >
+            <Search className="w-4 h-4" />
+            <span>Pesquisar</span>
+          </button>
         </div>
 
         {/* Autocomplete Dropdown overlay */}

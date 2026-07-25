@@ -482,7 +482,7 @@ function injectSEOMetadata(html: string, urlPath: string): string {
   const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.com.br";
   
   let title = "Dicionário Corporativo Gratuito | Siglas, Termos e Cargos";
-  let desc = "Consulte gratuitamente mais de 500 siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mercado. Pesquise rapidamente no Dicionário Corporativo Online.";
+  let desc = "Consulte o Dicionário Corporativo Gratuito com mais de 500 siglas corporativas, termos corporativos, cargos, metodologias e ferramentas empresariais. Pesquise rapidamente online.";
   let canonical = `${baseUrl}${urlPath}`;
   let schemaString = "";
 

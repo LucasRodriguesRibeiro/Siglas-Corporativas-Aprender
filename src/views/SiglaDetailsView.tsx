@@ -235,9 +235,6 @@ export default function SiglaDetailsView({
             </div>
           </div>
 
-          {/* Dicionário Corporativo Reusable Search & Quick Links Block */}
-          <CorporateDictionary navigate={navigate} />
-
           {/* Detailed explanation sections */}
           <div className="space-y-6">
             <h2 className="font-display font-extrabold text-xl text-white border-b border-white/[0.06] pb-2">
@@ -333,6 +330,9 @@ export default function SiglaDetailsView({
               </div>
             </div>
           </div>
+
+          {/* Dicionário Corporativo Reusable Search Block */}
+          <CorporateDictionary navigate={navigate} className="mt-8" />
         </div>
 
         {/* Related acronyms sidebar column */}
