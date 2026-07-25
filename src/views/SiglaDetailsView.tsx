@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Sigla, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
+import CorporateDictionary from "../components/CorporateDictionary";
 import { TIPO_LABELS } from "./HomeView";
 import { getSiglaBySlug, getFilteredSiglas, getBlogArticles } from "../data/dataService";
 
@@ -233,6 +234,9 @@ export default function SiglaDetailsView({
               </p>
             </div>
           </div>
+
+          {/* Dicionário Corporativo Reusable Search & Quick Links Block */}
+          <CorporateDictionary navigate={navigate} />
 
           {/* Detailed explanation sections */}
           <div className="space-y-6">

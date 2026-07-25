@@ -144,7 +144,7 @@ export default function App() {
       document.title = `Siglas Corporativas de ${matchedCategory} - Dicionário Gratuito`;
     } else if (path === "/") {
       setSelectedCategory("Todas");
-      document.title = "Siglas Corporativas | Dicionário Corporativo Gratuito";
+      document.title = "Dicionário Corporativo Gratuito | Siglas, Termos e Cargos";
     }
   }, [path]);
 

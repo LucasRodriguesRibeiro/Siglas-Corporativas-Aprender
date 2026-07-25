@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Sigla, BlogArticle, PortalStats, getItemUrl } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
+import CorporateDictionary from "../components/CorporateDictionary";
 import { SiglaCardSkeleton } from "../components/Skeleton";
 import { getPortalStats, getBlogArticles, getFilteredSiglas } from "../data/dataService";
 
@@ -260,71 +261,25 @@ export default function HomeView({
     <div className="pb-16 bg-[#07111F]">
       {/* 1. Hero Search Area */}
       <section className="relative pt-6 sm:pt-8 pb-4 bg-[#07111F] transition-all duration-250">
-        <div className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full text-center">
-          <div className="pt-2 sm:pt-4 pb-4">
+        <div className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full text-center space-y-8">
+          <div className="pt-2 sm:pt-4">
             <h1 className="font-display font-extrabold text-4xl sm:text-6xl tracking-tight text-white leading-tight">
               Siglas Corporativas
             </h1>
-            <p className="text-base sm:text-lg text-[#B6C2D0] font-medium max-w-3xl mx-auto leading-relaxed mt-6 sm:mt-8">
-              Consulte gratuitamente o significado de siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mercado de trabalho.
+            <p className="text-base sm:text-lg text-[#B6C2D0] font-medium max-w-3xl mx-auto leading-relaxed mt-4 sm:mt-6">
+              O maior Dicionário Corporativo gratuito para consultar siglas, termos, cargos e metodologias utilizadas nas empresas.
             </p>
           </div>
 
-          {/* Premium Search Box - mt-10 is exactly 40px (Hero -> Search: 40px) */}
-          <div className="relative max-w-2xl mx-auto mt-10" id="search-box-container">
-            <div className="relative flex items-center h-[60px] bg-[#111C31] hover:bg-[#162540] border border-white/[0.08] rounded-[18px] shadow-lg focus-within:ring-2 focus-within:ring-[#00C2A8]/30 focus-within:border-[#00C2A8] transition-all duration-250 overflow-hidden">
-              <div className="pl-4 text-[#7C8AA5]">
-                <Search className="w-5.5 h-5.5 text-[#00C2A8]" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                placeholder="Pesquisar sigla, significado, área ou tag... (ex: OKR, ROI)"
-                className="w-full py-4 px-3 text-white bg-transparent placeholder-[#7C8AA5] outline-none text-base font-normal"
-                id="main-search-input"
-              />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery("")}
-                  className="pr-4 text-xs font-semibold text-[#7C8AA5] hover:text-white transition-colors duration-250"
-                >
-                  Limpar
-                </button>
-              )}
-            </div>
+          {/* Dicionário Corporativo Component Block */}
+          <CorporateDictionary 
+            navigate={navigate} 
+            className="max-w-3xl mx-auto text-left"
+          />
 
-            {/* Autocomplete Dropdown overlay */}
-            {isFocused && autocompleteSuggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-[#111C31] border border-white/[0.08] rounded-[18px] shadow-2xl z-50 text-left overflow-hidden divide-y divide-white/[0.06]">
-                {autocompleteSuggestions.map((item) => (
-                  <div
-                    key={item.id}
-                    onMouseDown={() => navigate(getItemUrl(item))}
-                    className="p-4 hover:bg-[#162540] cursor-pointer flex items-center justify-between transition-colors duration-250"
-                  >
-                    <div>
-                      <span className="font-display font-extrabold text-[#00C2A8] text-lg mr-3">
-                        {item.sigla}
-                      </span>
-                      <span className="text-sm font-medium text-white">
-                        {item.nome_completo} {item.tipo ? `(${TIPO_LABELS[item.tipo] || item.tipo})` : ""}
-                      </span>
-                    </div>
-                    <span className="text-xs text-[#B6C2D0] font-mono bg-[#0D1628] border border-white/[0.05] px-2 py-0.5 rounded-md">
-                      {item.categoria}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Statistics counter card - mt-12 is exactly 48px (Search -> Stats: 48px) */}
+          {/* Statistics counter card */}
           {stats && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-6 max-w-3xl mx-auto mt-12 pt-10 border-t border-white/[0.06] text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-6 max-w-3xl mx-auto pt-6 border-t border-white/[0.06] text-center">
               <div className="p-5 sm:p-6 bg-[#111C31] hover:bg-[#162540] border border-white/[0.08] rounded-[20px] transition-all duration-250 scale-100 hover:scale-102">
                 <p className="text-2xl sm:text-3xl font-extrabold font-display text-[#00C2A8]">
                   +{stats.totalSiglas}

@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { BlogArticle, Sigla } from "../types";
 import AdsPlaceholder from "../components/AdsPlaceholder";
+import CorporateDictionary from "../components/CorporateDictionary";
 import { BlogCardSkeleton } from "../components/Skeleton";
 import { getBlogArticles, getBlogArticleBySlug, getAllSiglas } from "../data/dataService";
 
@@ -624,6 +625,9 @@ export default function BlogView({ articleSlug, navigate }: BlogViewProps) {
               </a>
             </div>
           </div>
+
+          {/* Dicionário Corporativo Block in Article View */}
+          <CorporateDictionary navigate={navigate} className="mt-8" />
         </article>
 
         {/* Ads inline */}
@@ -657,6 +661,9 @@ export default function BlogView({ articleSlug, navigate }: BlogViewProps) {
           Aprenda o significado de siglas corporativas, metodologias ágeis, cargos empresariais e termos de negócios para liderar conversas com clareza e autoridade.
         </p>
       </section>
+
+      {/* Dicionário Corporativo Block in Blog Listing View */}
+      <CorporateDictionary navigate={navigate} />
 
       {/* Ads top */}
       <AdsPlaceholder position="top" />

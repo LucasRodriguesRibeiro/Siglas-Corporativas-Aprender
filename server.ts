@@ -481,8 +481,8 @@ Sitemap: ${baseUrl}/sitemap.xml
 function injectSEOMetadata(html: string, urlPath: string): string {
   const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.com.br";
   
-  let title = "Siglas Corporativas | Dicionário Corporativo Gratuito";
-  let desc = "Consulte gratuitamente o significado de mais de 500 siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mundo corporativo.";
+  let title = "Dicionário Corporativo Gratuito | Siglas, Termos e Cargos";
+  let desc = "Consulte gratuitamente mais de 500 siglas corporativas, termos empresariais, cargos, metodologias e ferramentas utilizadas no mercado. Pesquise rapidamente no Dicionário Corporativo Online.";
   let canonical = `${baseUrl}${urlPath}`;
   let schemaString = "";
 
