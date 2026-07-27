@@ -18,7 +18,7 @@ export default function Header({
   const isBlog = currentPath.startsWith("/blog");
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#07111F]/80 backdrop-blur-[14px] border-b border-white/[0.05] transition-all duration-250">
+    <header className="w-full bg-[#07111F] border-b border-white/[0.05] transition-all duration-250">
       <div className="max-w-[1280px] mx-auto px-5 min-[360px]:px-6 md:px-8 w-full h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <div 

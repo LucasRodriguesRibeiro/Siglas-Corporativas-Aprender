@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import HomeView from "./views/HomeView";
 import SiglaDetailsView from "./views/SiglaDetailsView";
 import BlogView from "./views/BlogView";
+import AuthGuard from "./components/AuthGuard";
 import { getItemUrl } from "./types";
 import { getFilteredSiglas } from "./data/dataService";
 
@@ -240,113 +241,115 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#07111F] text-[#FFFFFF] transition-colors duration-250">
-      
-      {/* Web Layout: Hidden when printing */}
-      <div className="print:hidden flex flex-col min-h-screen">
-        {/* Top sticky brand header bar */}
-        <Header
-          currentPath={path}
-          navigate={navigate}
-          setShowFavorites={setShowFavorites}
-          showFavorites={showFavorites}
-        />
+    <AuthGuard>
+      <div className="min-h-screen flex flex-col bg-[#07111F] text-[#FFFFFF] transition-colors duration-250">
+        
+        {/* Web Layout: Hidden when printing */}
+        <div className="print:hidden flex flex-col min-h-screen">
+          {/* Top sticky brand header bar */}
+          <Header
+            currentPath={path}
+            navigate={navigate}
+            setShowFavorites={setShowFavorites}
+            showFavorites={showFavorites}
+          />
 
-        {/* Main Dynamic Viewport wrapper */}
-        <main className="flex-grow">
-          {renderView()}
-        </main>
+          {/* Main Dynamic Viewport wrapper */}
+          <main className="flex-grow">
+            {renderView()}
+          </main>
 
-        {/* Shared bottom information map footer */}
-        <Footer
-          navigate={navigate}
-          categories={categoriesList}
-          onSelectCategory={(cat) => {
-            handleSelectCategory(cat);
-            setShowFavorites(false);
-          }}
-        />
-      </div>
-
-      {/* Dynamic PDF / Print Layout: Only visible when print is active (Save as PDF) */}
-      <div className="hidden print:block text-black bg-white p-10 font-sans space-y-6">
-        <div className="text-center border-b-2 border-teal-600 pb-5 mb-6">
-          <h1 className="text-3xl font-extrabold text-teal-800 tracking-tight">Dicionário de Siglas Corporativas</h1>
-          <p className="text-sm text-slate-600 font-medium mt-1">
-            Guia Completo para Aprender Siglas Corporativas em Português e Inglês
-          </p>
-          <p className="text-[10px] text-slate-400 mt-1">Gerado gratuitamente por siglascorporativasaprender.com.br</p>
+          {/* Shared bottom information map footer */}
+          <Footer
+            navigate={navigate}
+            categories={categoriesList}
+            onSelectCategory={(cat) => {
+              handleSelectCategory(cat);
+              setShowFavorites(false);
+            }}
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
-          <div>
-            <p className="font-bold text-teal-700">📌 Sobre este Dicionário:</p>
-            <p className="text-slate-600 mt-0.5">Compilado completo da linguagem de siglas corporativas para impulsionar sua carreira, contendo conceitos fundamentais, definições objetivas e traduções em inglês.</p>
+        {/* Dynamic PDF / Print Layout: Only visible when print is active (Save as PDF) */}
+        <div className="hidden print:block text-black bg-white p-10 font-sans space-y-6">
+          <div className="text-center border-b-2 border-teal-600 pb-5 mb-6">
+            <h1 className="text-3xl font-extrabold text-teal-800 tracking-tight">Dicionário de Siglas Corporativas</h1>
+            <p className="text-sm text-slate-600 font-medium mt-1">
+              Guia Completo para Aprender Siglas Corporativas em Português e Inglês
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1">Gerado gratuitamente por siglascorporativasaprender.com.br</p>
           </div>
-          <div>
-            <p className="font-bold text-teal-700">💡 Como Estudar:</p>
-            <p className="text-slate-600 mt-0.5">Revise o glossário por categoria profissional e aplique os termos em reuniões, e-mails e apresentações de negócios.</p>
-          </div>
-        </div>
 
-        {/* Categories section */}
-        <div className="space-y-6">
-          {categoriesList.map((cat) => {
-            const catSiglas = allSiglas.filter(s => s.categoria.toLowerCase() === cat.toLowerCase());
-            if (catSiglas.length === 0) return null;
-            return (
-              <div key={cat} className="break-inside-avoid page-break-inside-avoid py-4 border-b border-slate-200">
-                <h2 className="text-lg font-bold text-teal-700 border-b border-slate-300 pb-1.5 mb-3 uppercase tracking-wider">
-                  {cat}
-                </h2>
-                <div className="grid grid-cols-1 gap-3.5">
-                  {catSiglas.map((s) => (
-                    <div key={s.id} className="pb-3 border-b border-slate-100 last:border-0">
-                      <div className="flex justify-between items-baseline">
-                        <span className="text-base font-bold text-slate-900">{s.sigla}</span>
-                        <span className="text-[10px] font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">{s.subcategoria || "Geral"}</span>
+          <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <div>
+              <p className="font-bold text-teal-700">📌 Sobre este Dicionário:</p>
+              <p className="text-slate-600 mt-0.5">Compilado completo da linguagem de siglas corporativas para impulsionar sua carreira, contendo conceitos fundamentais, definições objetivas e traduções em inglês.</p>
+            </div>
+            <div>
+              <p className="font-bold text-teal-700">💡 Como Estudar:</p>
+              <p className="text-slate-600 mt-0.5">Revise o glossário por categoria profissional e aplique os termos em reuniões, e-mails e apresentações de negócios.</p>
+            </div>
+          </div>
+
+          {/* Categories section */}
+          <div className="space-y-6">
+            {categoriesList.map((cat) => {
+              const catSiglas = allSiglas.filter(s => s.categoria.toLowerCase() === cat.toLowerCase());
+              if (catSiglas.length === 0) return null;
+              return (
+                <div key={cat} className="break-inside-avoid page-break-inside-avoid py-4 border-b border-slate-200">
+                  <h2 className="text-lg font-bold text-teal-700 border-b border-slate-300 pb-1.5 mb-3 uppercase tracking-wider">
+                    {cat}
+                  </h2>
+                  <div className="grid grid-cols-1 gap-3.5">
+                    {catSiglas.map((s) => (
+                      <div key={s.id} className="pb-3 border-b border-slate-100 last:border-0">
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-base font-bold text-slate-900">{s.sigla}</span>
+                          <span className="text-[10px] font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">{s.subcategoria || "Geral"}</span>
+                        </div>
+                        <p className="text-xs font-bold text-slate-700 mt-0.5">{s.nome_completo}</p>
+                        {s.traducao && s.traducao !== "Não aplicável" && (
+                          <p className="text-[10px] text-slate-500 italic">Tradução: {s.traducao}</p>
+                        )}
+                        <p className="text-xs text-slate-600 leading-relaxed mt-1">{s.descricao_curta}</p>
+                        {s.exemplo && (
+                          <p className="text-[10px] text-slate-500 mt-1 italic bg-slate-50/55 p-1 rounded border-l-2 border-teal-500">
+                            Exemplo de uso: "{s.exemplo}"
+                          </p>
+                        )}
                       </div>
-                      <p className="text-xs font-bold text-slate-700 mt-0.5">{s.nome_completo}</p>
-                      {s.traducao && s.traducao !== "Não aplicável" && (
-                        <p className="text-[10px] text-slate-500 italic">Tradução: {s.traducao}</p>
-                      )}
-                      <p className="text-xs text-slate-600 leading-relaxed mt-1">{s.descricao_curta}</p>
-                      {s.exemplo && (
-                        <p className="text-[10px] text-slate-500 mt-1 italic bg-slate-50/55 p-1 rounded border-l-2 border-teal-500">
-                          Exemplo de uso: "{s.exemplo}"
-                        </p>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        <div className="text-center pt-6 border-t border-slate-200 text-[10px] text-slate-400 space-y-1">
-          <p>© {new Date().getFullYear()} Dicionário Corporativo (siglascorporativasaprender.com.br). Todos os direitos reservados.</p>
-          <p>O maior dicionário online para aprender linguagem de siglas corporativas em português e inglês.</p>
-          <p className="pt-1 text-[11px] text-slate-500">
-            Desenvolvido por{" "}
-            <a 
-              href="https://www.instagram.com/lucasribeirotrafego/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="font-semibold text-teal-600 hover:text-teal-700 hover:underline"
-            >
-              @lucasribeirotrafego
-            </a>{" "}
-            • E-mail:{" "}
-            <a 
-              href="mailto:agencialucasrodrigues@gmail.com" 
-              className="text-slate-600 hover:text-slate-800 hover:underline"
-            >
-              agencialucasrodrigues@gmail.com
-            </a>
-          </p>
+          <div className="text-center pt-6 border-t border-slate-200 text-[10px] text-slate-400 space-y-1">
+            <p>© {new Date().getFullYear()} Dicionário Corporativo (siglascorporativasaprender.com.br). Todos os direitos reservados.</p>
+            <p>O maior dicionário online para aprender linguagem de siglas corporativas em português e inglês.</p>
+            <p className="pt-1 text-[11px] text-slate-500">
+              Desenvolvido por{" "}
+              <a 
+                href="https://www.instagram.com/lucasribeirotrafego/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="font-semibold text-teal-600 hover:text-teal-700 hover:underline"
+              >
+                @lucasribeirotrafego
+              </a>{" "}
+              • E-mail:{" "}
+              <a 
+                href="mailto:agencialucasrodrigues@gmail.com" 
+                className="text-slate-600 hover:text-slate-800 hover:underline"
+              >
+                agencialucasrodrigues@gmail.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </AuthGuard>
   );
 }

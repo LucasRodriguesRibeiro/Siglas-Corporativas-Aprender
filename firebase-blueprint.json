@@ -1,0 +1,15 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "User profiles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "username": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "username"]
+    }
+  }
+}
