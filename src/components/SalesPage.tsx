@@ -103,20 +103,20 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
 
       {/* Hero Section */}
       <section className="relative pt-8 sm:pt-14 pb-12 sm:pb-16 px-4 overflow-hidden border-b border-white/5">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[200px] sm:h-[350px] bg-[#00C2A8]/10 rounded-full blur-[90px] sm:blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[200px] sm:h-[350px] bg-[#00C2A8]/15 rounded-full blur-[90px] sm:blur-[120px] pointer-events-none"></div>
 
         <div className="max-w-4xl mx-auto text-center space-y-5 sm:space-y-6 relative z-10">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-[#111C31] border border-[#00C2A8]/30 rounded-full text-[11px] sm:text-xs font-medium text-[#00C2A8]">
+          <div className="inline-flex items-center space-x-1.5 px-3.5 py-1 bg-[#111C31] border border-[#00C2A8]/30 rounded-full text-[11px] sm:text-xs font-semibold text-[#00C2A8] shadow-sm">
             <Award className="w-3.5 h-3.5 text-[#00C2A8] shrink-0" />
             <span className="truncate">O Guia Nº1 de Termos Corporativos no Brasil</span>
           </div>
 
           <h1 className="font-display font-extrabold text-2xl sm:text-5xl leading-snug sm:leading-tight text-white tracking-tight px-1">
-            Nunca Mais Fique Perdido em Reuniões com <span className="text-[#00C2A8] underline decoration-[#00C2A8]/40">Siglas Corporativas</span> Que Você Não Conhece!
+            Nunca Mais Fique Perdido em Reuniões com <span className="bg-gradient-to-r from-[#00C2A8] via-[#00E5FF] to-[#38BDF8] bg-clip-text text-transparent underline decoration-[#00C2A8]/40">Siglas Corporativas</span> Que Você Não Conhece!
           </h1>
 
           <p className="text-xs sm:text-base text-[#B6C2D0] max-w-2xl mx-auto leading-relaxed px-2">
-            Aprenda instantaneamente o significado das <strong className="text-white font-semibold">siglas e termos mais usados e atualizados todos os dias</strong> nas maiores empresas (EBITDA, MoM, OKR, SLA, B2B, ROI e mais).
+            Consulte o significado de qualquer sigla em <strong className="text-[#00C2A8] font-bold">menos de 3 segundos</strong> direto no seu celular ou computador durante a reunião e entenda termos como EBITDA, OKR, SLA, B2B e ROI sem hesitar.
           </p>
 
 
@@ -125,7 +125,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
         </div>
 
         {/* Interactive Preview Mockup Box for Mobile & Desktop */}
-        <div className="mt-8 sm:mt-12 max-w-xl mx-auto bg-[#0B1727] border border-[#00C2A8]/30 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-4">
+        <div className="mt-8 sm:mt-12 max-w-xl mx-auto bg-[#0B1727] border border-[#00C2A8]/30 rounded-2xl p-4 sm:p-6 shadow-2xl shadow-[#00C2A8]/10 space-y-4">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center space-x-2">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
@@ -133,7 +133,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
               <span className="text-[11px] text-[#7C8AA5] font-mono ml-2">preview-interativo.app</span>
             </div>
-            <span className="text-[10px] text-[#00C2A8] font-bold bg-[#00C2A8]/10 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] text-[#00C2A8] font-bold bg-[#00C2A8]/10 border border-[#00C2A8]/30 px-2.5 py-0.5 rounded-full">
               Toque para testar
             </span>
           </div>
@@ -147,8 +147,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
                   onClick={() => setActiveSampleIndex(idx)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                     activeSampleIndex === idx
-                      ? "bg-[#00C2A8] text-[#07111F] shadow-md"
-                      : "bg-[#111C31] text-[#B6C2D0] hover:text-white border border-white/10"
+                      ? "bg-[#00C2A8] text-[#07111F] shadow-lg shadow-[#00C2A8]/20 scale-105"
+                      : "bg-[#111C31] text-[#B6C2D0] hover:text-white border border-white/10 hover:border-[#00C2A8]/30"
                   }`}
                 >
                   {term.sigla}
@@ -158,23 +158,23 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </div>
 
           {/* Sample Card Output */}
-          <div className="bg-[#111C31] border border-white/10 rounded-xl p-4 space-y-2.5 transition-all text-left">
+          <div className="bg-[#111C31] border border-[#00C2A8]/20 rounded-xl p-4 space-y-2.5 transition-all text-left">
             <div className="flex items-center justify-between">
               <span className="text-lg font-black text-[#00C2A8]">{SAMPLE_TERMS[activeSampleIndex].sigla}</span>
-              <span className="text-[10px] bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/20 px-2 py-0.5 rounded-md font-semibold">
+              <span className="text-[10px] bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/30 px-2 py-0.5 rounded-md font-semibold">
                 {SAMPLE_TERMS[activeSampleIndex].categoria}
               </span>
             </div>
             <p className="text-xs font-semibold text-white">
               {SAMPLE_TERMS[activeSampleIndex].nome}
             </p>
-            <p className="text-[11px] text-[#00C2A8] italic">
+            <p className="text-[11px] text-[#00E5FF] italic">
               🇧🇷 Tradução: {SAMPLE_TERMS[activeSampleIndex].traducao}
             </p>
             <p className="text-xs text-[#B6C2D0] leading-relaxed">
               {SAMPLE_TERMS[activeSampleIndex].resumo}
             </p>
-            <div className="pt-2 border-t border-white/5 text-[11px] text-[#7C8AA5]">
+            <div className="pt-2 border-t border-white/10 text-[11px] text-[#7C8AA5]">
               <strong className="text-white">Exemplo prático:</strong> "{SAMPLE_TERMS[activeSampleIndex].exemplo}"
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-[#111C31] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-2.5">
+            <div className="bg-[#111C31] border border-white/10 hover:border-[#00C2A8]/30 transition-all rounded-2xl p-5 sm:p-6 space-y-2.5">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center font-bold text-sm sm:text-lg">
                 1
               </div>
@@ -204,7 +204,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="bg-[#111C31] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-2.5">
+            <div className="bg-[#111C31] border border-white/10 hover:border-[#00C2A8]/30 transition-all rounded-2xl p-5 sm:p-6 space-y-2.5">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm sm:text-lg">
                 2
               </div>
@@ -214,7 +214,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="bg-[#111C31] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-2.5">
+            <div className="bg-[#111C31] border border-white/10 hover:border-[#00C2A8]/30 transition-all rounded-2xl p-5 sm:p-6 space-y-2.5">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#00C2A8]/10 border border-[#00C2A8]/20 text-[#00C2A8] flex items-center justify-center font-bold text-sm sm:text-lg">
                 3
               </div>
@@ -288,7 +288,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           {/* Solution Callout */}
           <div className="bg-gradient-to-r from-[#00C2A8]/10 via-[#111C31] to-[#00C2A8]/10 border border-[#00C2A8]/30 rounded-2xl p-5 text-center space-y-3">
             <div className="flex items-center justify-center space-x-2 text-[#00C2A8]">
-              <Sparkles className="w-5 h-5" />
+              <Sparkles className="w-5 h-5 text-[#00C2A8]" />
               <span className="font-extrabold text-sm text-white">Fale com Total Segurança e Autoridade em Qualquer Reunião</span>
             </div>
             <p className="text-xs sm:text-sm text-[#B6C2D0] max-w-2xl mx-auto leading-relaxed">
@@ -314,8 +314,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <Search className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">Busca Instantânea Inteligente</h3>
@@ -324,8 +324,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">Tradução e Contexto em Inglês</h3>
@@ -334,8 +334,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">Exemplos Reais Práticos</h3>
@@ -344,8 +344,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <Flame className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">Categorizado por Área</h3>
@@ -354,8 +354,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">Acesso Vitalício sem Mensalidade</h3>
@@ -364,8 +364,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
               </p>
             </div>
 
-            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5">
-              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl">
+            <div className="p-5 sm:p-6 bg-[#0B1727] border border-white/10 rounded-2xl space-y-2.5 hover:border-[#00C2A8]/30 transition-all">
+              <div className="p-2.5 bg-[#00C2A8]/10 text-[#00C2A8] w-fit rounded-xl border border-[#00C2A8]/20">
                 <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <h3 className="font-bold text-sm sm:text-base text-white">100% Responsivo no Celular</h3>
@@ -379,8 +379,8 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
 
       {/* Offer / Pricing Box */}
       <section className="py-12 sm:py-16 px-4 bg-gradient-to-b from-[#07111F] to-[#0B1727] border-t border-white/5" id="checkout">
-        <div className="max-w-xl mx-auto bg-[#0B1727] border-2 border-[#00C2A8]/50 rounded-3xl p-5 sm:p-10 shadow-2xl space-y-6 sm:space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 bg-[#00C2A8] text-[#07111F] text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-2xl flex items-center space-x-1">
+        <div className="max-w-xl mx-auto bg-[#0B1727] border-2 border-[#00C2A8] rounded-3xl p-5 sm:p-10 shadow-2xl shadow-[#00C2A8]/15 space-y-6 sm:space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-[#00C2A8] text-[#07111F] text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-2xl flex items-center space-x-1 shadow-md">
             <Flame className="w-3 h-3 fill-[#07111F]" />
             <span>Oferta Especial</span>
           </div>
@@ -394,7 +394,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
             </p>
           </div>
 
-          <div className="space-y-2 text-center py-4 bg-[#111C31] rounded-2xl border border-white/5">
+          <div className="space-y-2 text-center py-4 bg-[#111C31] rounded-2xl border border-white/10">
             <p className="text-xs text-[#7C8AA5] line-through">De R$ 197,00 por apenas</p>
             <div className="flex items-center justify-center space-x-1">
               <span className="text-sm font-bold text-[#00C2A8]">R$</span>
@@ -430,7 +430,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </div>
 
           {/* Payment Methods Badge */}
-          <div className="pt-2 border-t border-white/5 flex items-center justify-center space-x-4 text-[11px] text-[#7C8AA5]">
+          <div className="pt-2 border-t border-white/10 flex items-center justify-center space-x-4 text-[11px] text-[#7C8AA5]">
             <span className="flex items-center space-x-1">
               <QrCode className="w-3.5 h-3.5 text-[#00C2A8]" />
               <span>PIX Imediato</span>
@@ -446,7 +446,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
             href={HOTMART_CHECKOUT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-sm sm:text-base rounded-2xl transition-all shadow-xl hover:shadow-[#00C2A8]/30 flex items-center justify-center space-x-2 active:scale-95"
+            className="w-full py-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-sm sm:text-base rounded-2xl transition-all shadow-xl shadow-[#00C2A8]/20 flex items-center justify-center space-x-2 active:scale-95"
           >
             <span>COMPRAR ACESSO AGORA - R$ 67,00</span>
             <ChevronRight className="w-4 h-4 shrink-0" />
