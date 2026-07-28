@@ -146,7 +146,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
   const selectedTerm = filteredTerms[activeSampleIndex] || filteredTerms[0] || SAMPLE_TERMS[0];
 
   return (
-    <div className="min-h-screen bg-[#07111F] text-white flex flex-col font-sans selection:bg-[#00C2A8] selection:text-[#07111F] pb-24 sm:pb-0">
+    <div className="min-h-screen bg-[#07111F] text-white flex flex-col font-sans selection:bg-[#00C2A8] selection:text-[#07111F]">
 
 
       {/* Hero Section */}
@@ -154,11 +154,6 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[200px] sm:h-[350px] bg-[#00C2A8]/15 rounded-full blur-[90px] sm:blur-[120px] pointer-events-none"></div>
 
         <div className="max-w-4xl mx-auto text-center space-y-5 sm:space-y-6 relative z-10">
-          <div className="inline-flex items-center space-x-1.5 px-3.5 py-1 bg-[#111C31] border border-[#00C2A8]/30 rounded-full text-[11px] sm:text-xs font-semibold text-[#00C2A8] shadow-sm">
-            <Award className="w-3.5 h-3.5 text-[#00C2A8] shrink-0" />
-            <span className="truncate">O Guia Nº1 de Termos Corporativos no Brasil</span>
-          </div>
-
           <h1 className="font-display font-extrabold text-2xl sm:text-5xl leading-snug sm:leading-tight text-white tracking-tight px-1">
             Nunca Mais Fique Perdido em Reuniões com <span className="bg-gradient-to-r from-[#00C2A8] via-[#00E5FF] to-[#38BDF8] bg-clip-text text-transparent underline decoration-[#00C2A8]/40">Siglas Corporativas</span> Que Você Não Conhece!
           </h1>
@@ -247,27 +242,6 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
                   }`}
                 >
                   {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Fast Suggestion Pills */}
-            <div className="flex items-center gap-1.5 flex-wrap pt-1">
-              <span className="text-[10px] text-[#7C8AA5]">Clique para testar:</span>
-              {SAMPLE_TERMS.slice(0, 4).map((term) => (
-                <button
-                  key={term.sigla}
-                  onClick={() => {
-                    setDemoSearch(term.sigla);
-                    setActiveSampleIndex(0);
-                  }}
-                  className={`text-[10px] px-2 py-0.5 rounded-md font-bold transition-all ${
-                    selectedTerm?.sigla === term.sigla
-                      ? "bg-[#00C2A8]/20 text-[#00C2A8] border border-[#00C2A8]/50"
-                      : "bg-[#111C31] text-[#7C8AA5] hover:text-white border border-white/5"
-                  }`}
-                >
-                  {term.sigla}
                 </button>
               ))}
             </div>
@@ -689,19 +663,6 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </a>
         </div>
       </footer>
-
-      {/* Mobile Sticky CTA Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0B1727]/95 backdrop-blur-lg border-t border-[#00C2A8]/30 p-3 sm:hidden shadow-2xl flex items-center justify-center">
-        <a
-          href={HOTMART_CHECKOUT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full py-3.5 px-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-xs rounded-xl flex items-center justify-center space-x-1.5 shadow-lg active:scale-95 transition-all text-center uppercase tracking-wide"
-        >
-          <span>QUERO GARANTIR MEU ACESSO AGORA</span>
-          <ArrowRight className="w-4 h-4 shrink-0" />
-        </a>
-      </div>
     </div>
   );
 }
