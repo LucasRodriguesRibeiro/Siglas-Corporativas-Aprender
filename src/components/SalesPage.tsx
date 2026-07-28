@@ -99,47 +99,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
 
   return (
     <div className="min-h-screen bg-[#07111F] text-white flex flex-col font-sans selection:bg-[#00C2A8] selection:text-[#07111F] pb-24 sm:pb-0">
-      {/* Top Announcement Bar */}
-      <div className="bg-gradient-to-r from-[#00C2A8] via-[#00a892] to-[#008f7b] text-[#07111F] px-3 py-2 text-center text-xs font-bold flex items-center justify-between sm:justify-center space-x-2 shadow-md">
-        <div className="flex items-center space-x-1.5 mx-auto sm:mx-0 truncate">
-          <Sparkles className="w-3.5 h-3.5 animate-bounce shrink-0" />
-          <span className="truncate">OFERTA ESPECIAL: Acesso Vitalício por R$ 67,00 por Tempo Limitado!</span>
-        </div>
-        <button 
-          onClick={onBackToLogin}
-          className="text-[11px] underline hover:opacity-80 font-extrabold shrink-0 ml-2"
-        >
-          Entrar
-        </button>
-      </div>
 
-      {/* Main Header */}
-      <header className="border-b border-white/10 bg-[#0B1727]/95 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5 cursor-pointer" onClick={onBackToLogin}>
-            <div className="p-2 bg-[#111C31] border border-[#00C2A8]/40 rounded-xl text-[#00C2A8] shrink-0">
-              <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-            <div>
-              <span className="font-display font-extrabold text-base sm:text-lg tracking-tight text-white block leading-tight">
-                Dicionário Corporativo
-              </span>
-              <span className="text-[9px] sm:text-[10px] text-[#00C2A8] font-semibold tracking-wider uppercase block">
-                Guia Definitivo de Siglas
-              </span>
-            </div>
-          </div>
-
-          <button
-            onClick={onBackToLogin}
-            className="flex items-center space-x-1 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#111C31] hover:bg-[#182640] border border-white/10 rounded-xl text-xs font-semibold text-white transition-all shrink-0"
-          >
-            <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00C2A8]" />
-            <span className="hidden min-[400px]:inline">Já sou Aluno</span>
-            <span className="min-[400px]:hidden">Login</span>
-          </button>
-        </div>
-      </header>
 
       {/* Hero Section */}
       <section className="relative pt-8 sm:pt-14 pb-12 sm:pb-16 px-4 overflow-hidden border-b border-white/5">
@@ -159,42 +119,9 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
             Aprenda instantaneamente o significado das <strong className="text-white font-semibold">siglas e termos mais usados e atualizados todos os dias</strong> nas maiores empresas (EBITDA, MoM, OKR, SLA, B2B, ROI e mais).
           </p>
 
-          <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-2">
-            <a
-              href={HOTMART_CHECKOUT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-sm sm:text-base rounded-2xl shadow-xl hover:shadow-[#00C2A8]/20 transition-all flex items-center justify-center space-x-2 sm:space-x-3 transform active:scale-95 sm:hover:-translate-y-0.5"
-            >
-              <span>QUERO GARANTIR MEU ACESSO (R$ 67)</span>
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-            </a>
 
-            <button
-              onClick={onBackToLogin}
-              className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-4 bg-[#111C31] hover:bg-[#182640] border border-white/10 text-xs font-bold text-[#B6C2D0] rounded-2xl transition-all"
-            >
-              Já tenho usuário e senha
-            </button>
-          </div>
 
-          {/* Social Proof badge */}
-          <div className="pt-4 sm:pt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] sm:text-xs text-[#7C8AA5]">
-            <div className="flex items-center space-x-1 text-amber-400 bg-[#111C31]/80 px-2.5 py-1 rounded-lg border border-white/5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
-              ))}
-              <span className="text-white font-bold ml-1 text-[11px]">4.9/5 estrelas</span>
-            </div>
-            <div className="flex items-center space-x-1.5 bg-[#111C31]/80 px-2.5 py-1 rounded-lg border border-white/5">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#00C2A8]" />
-              <span>Garantia de 7 Dias</span>
-            </div>
-            <div className="flex items-center space-x-1.5 bg-[#111C31]/80 px-2.5 py-1 rounded-lg border border-white/5">
-              <Zap className="w-3.5 h-3.5 text-[#00C2A8]" />
-              <span>Acesso Imediato</span>
-            </div>
-          </div>
+
         </div>
 
         {/* Interactive Preview Mockup Box for Mobile & Desktop */}
@@ -592,19 +519,15 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
       </footer>
 
       {/* Mobile Sticky CTA Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0B1727]/95 backdrop-blur-lg border-t border-[#00C2A8]/30 p-3 sm:hidden shadow-2xl flex items-center justify-between gap-2">
-        <div className="flex flex-col">
-          <span className="text-[10px] text-[#7C8AA5] line-through">De R$ 197,00</span>
-          <span className="text-base font-black text-[#00C2A8] leading-tight">R$ 67,00</span>
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0B1727]/95 backdrop-blur-lg border-t border-[#00C2A8]/30 p-3 sm:hidden shadow-2xl flex items-center justify-center">
         <a
           href={HOTMART_CHECKOUT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 py-3 px-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-xs rounded-xl flex items-center justify-center space-x-1 shadow-lg active:scale-95 transition-all text-center"
+          className="w-full py-3.5 px-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-xs rounded-xl flex items-center justify-center space-x-1.5 shadow-lg active:scale-95 transition-all text-center uppercase tracking-wide"
         >
-          <span>GARANTIR ACESSO AGORA</span>
-          <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+          <span>QUERO GARANTIR MEU ACESSO AGORA</span>
+          <ArrowRight className="w-4 h-4 shrink-0" />
         </a>
       </div>
     </div>
