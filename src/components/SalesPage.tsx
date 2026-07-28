@@ -22,7 +22,11 @@ import {
   Check,
   Brain,
   AlertCircle,
-  MessageSquare
+  MessageSquare,
+  Bookmark,
+  Copy,
+  X,
+  Filter
 } from "lucide-react";
 
 interface SalesPageProps {
@@ -37,23 +41,15 @@ const SAMPLE_TERMS = [
     nome: "Earnings Before Interest, Taxes, Depreciation, and Amortization",
     traducao: "Lucros Antes de Juros, Impostos, Depreciação e Amortização",
     categoria: "Finanças",
-    resumo: "Mede a eficiência operacional de uma empresa desconsiderando impostos e finanças.",
+    resumo: "Mede a eficiência operacional da empresa desconsiderando juros, impostos e depreciação.",
     exemplo: "O nosso EBITDA cresceu 15% no último trimestre devido ao corte de custos operacionais."
-  },
-  {
-    sigla: "MoM",
-    nome: "Month over Month",
-    traducao: "Mês a Mês",
-    categoria: "Métricas / Vendas",
-    resumo: "Comparativo de desempenho e métricas entre o mês atual e o mês imediatamente anterior.",
-    exemplo: "Tivemos um aumento de 22% MoM no número de novos clientes cadastrados."
   },
   {
     sigla: "OKR",
     nome: "Objectives and Key Results",
     traducao: "Objetivos e Resultados-Chave",
     categoria: "Gestão",
-    resumo: "Metodologia de gestão de metas usada por empresas como Google, Netflix e Meta.",
+    resumo: "Metodologia de gestão de metas focada em alinhar objetivos ambiciosos com resultados mensuráveis.",
     exemplo: "Nosso principal OKR para este semestre é reduzir o tempo de atendimento ao cliente."
   },
   {
@@ -61,8 +57,32 @@ const SAMPLE_TERMS = [
     nome: "Service Level Agreement",
     traducao: "Acordo de Nível de Serviço",
     categoria: "Operações",
-    resumo: "Compromisso formal que especifica o tempo e a qualidade de entrega de um serviço.",
-    exemplo: "O SLA do suporte técnico é de no máximo 2 horas para chamados urgentes."
+    resumo: "Compromisso formal que especifica o tempo limite e a qualidade exigida de entrega de um serviço.",
+    exemplo: "O SLA do suporte técnico para chamados urgentes é de no máximo 2 horas."
+  },
+  {
+    sigla: "MoM",
+    nome: "Month over Month",
+    traducao: "Mês a Mês",
+    categoria: "Vendas",
+    resumo: "Métrica comparativa do desempenho do mês atual em relação ao mês imediatamente anterior.",
+    exemplo: "Tivemos um aumento de 22% MoM no número de novos clientes cadastrados."
+  },
+  {
+    sigla: "CAC",
+    nome: "Customer Acquisition Cost",
+    traducao: "Custo de Aquisição de Cliente",
+    categoria: "Marketing",
+    resumo: "Valor total investido em marketing e vendas para conseguir atrair um novo cliente.",
+    exemplo: "Otimizamos nossas campanhas digitais e reduzimos o CAC de R$ 120 para R$ 75."
+  },
+  {
+    sigla: "ROI",
+    nome: "Return on Investment",
+    traducao: "Retorno sobre o Investimento",
+    categoria: "Finanças",
+    resumo: "Métrica que calcula o ganho ou perda financeira obtida em relação ao capital investido.",
+    exemplo: "O ROI da nova ferramenta de automação superou 300% no primeiro ano."
   }
 ];
 
@@ -93,9 +113,37 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
   const [activeSampleIndex, setActiveSampleIndex] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
+  // Live demo app states
+  const [demoSearch, setDemoSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const [demoFavorite, setDemoFavorite] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Filter terms according to search or category
+  const filteredTerms = SAMPLE_TERMS.filter((term) => {
+    const matchesSearch = 
+      demoSearch.trim() === "" ||
+      term.sigla.toLowerCase().includes(demoSearch.toLowerCase()) ||
+      term.nome.toLowerCase().includes(demoSearch.toLowerCase()) ||
+      term.traducao.toLowerCase().includes(demoSearch.toLowerCase()) ||
+      term.categoria.toLowerCase().includes(demoSearch.toLowerCase());
+
+    const matchesCategory = selectedCategory === "Todas" || term.categoria.includes(selectedCategory);
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const selectedTerm = filteredTerms[activeSampleIndex] || filteredTerms[0] || SAMPLE_TERMS[0];
 
   return (
     <div className="min-h-screen bg-[#07111F] text-white flex flex-col font-sans selection:bg-[#00C2A8] selection:text-[#07111F] pb-24 sm:pb-0">
@@ -118,37 +166,105 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           <p className="text-xs sm:text-base text-[#B6C2D0] max-w-2xl mx-auto leading-relaxed px-2">
             Consulte o significado de qualquer sigla em <strong className="text-[#00C2A8] font-bold">menos de 3 segundos</strong> direto no seu celular ou computador durante a reunião e entenda termos como EBITDA, OKR, SLA, B2B e ROI sem hesitar.
           </p>
-
-
-
-
         </div>
 
-        {/* Interactive Preview Mockup Box for Mobile & Desktop */}
-        <div className="mt-8 sm:mt-12 max-w-xl mx-auto bg-[#0B1727] border border-[#00C2A8]/30 rounded-2xl p-4 sm:p-6 shadow-2xl shadow-[#00C2A8]/10 space-y-4">
+        {/* Realistic Interactive App Preview Container */}
+        <div className="mt-8 sm:mt-12 max-w-2xl mx-auto bg-[#0B1727] border border-[#00C2A8]/40 rounded-2xl p-4 sm:p-6 shadow-2xl shadow-[#00C2A8]/15 space-y-4 text-left relative z-10">
+          
+          {/* App Window Header */}
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center space-x-2">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
               <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-              <span className="text-[11px] text-[#7C8AA5] font-mono ml-2">preview-interativo.app</span>
+              <span className="text-[11px] text-[#7C8AA5] font-mono ml-2 hidden sm:inline">dicionariocorporativo.app</span>
             </div>
-            <span className="text-[10px] text-[#00C2A8] font-bold bg-[#00C2A8]/10 border border-[#00C2A8]/30 px-2.5 py-0.5 rounded-full">
-              Toque para testar
+            <div className="flex items-center space-x-2">
+              <span className="inline-flex items-center space-x-1 text-[10px] text-[#00C2A8] font-bold bg-[#00C2A8]/10 border border-[#00C2A8]/30 px-2.5 py-0.5 rounded-full">
+                <Sparkles className="w-3 h-3 text-[#00C2A8]" />
+                <span>Demonstração ao Vivo</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Realistic App Title Bar */}
+          <div className="flex items-center justify-between bg-[#111C31] p-3 rounded-xl border border-white/5">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[#00C2A8]/20 border border-[#00C2A8]/40 flex items-center justify-center text-[#00C2A8]">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white">Dicionário Corporativo</h4>
+                <p className="text-[10px] text-[#7C8AA5]">500+ Siglas & Termos Cadastrados</p>
+              </div>
+            </div>
+            <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-medium">
+              ● Sistema Ativo
             </span>
           </div>
 
+          {/* Interactive Search Bar */}
           <div className="space-y-2">
-            <label className="text-[11px] text-[#B6C2D0] font-medium block">Exemplos de consultas no dicionário:</label>
-            <div className="flex flex-wrap gap-1.5">
-              {SAMPLE_TERMS.map((term, idx) => (
+            <div className="relative">
+              <Search className="w-4 h-4 text-[#00C2A8] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={demoSearch}
+                onChange={(e) => {
+                  setDemoSearch(e.target.value);
+                  setActiveSampleIndex(0);
+                }}
+                placeholder="Busque por qualquer sigla (ex: EBITDA, OKR, ROI, CAC)..."
+                className="w-full pl-10 pr-9 py-2.5 bg-[#111C31] border border-[#00C2A8]/30 rounded-xl text-xs text-white placeholder-[#7C8AA5] focus:outline-none focus:border-[#00C2A8] focus:ring-1 focus:ring-[#00C2A8] transition-all"
+              />
+              {demoSearch && (
+                <button
+                  onClick={() => setDemoSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7C8AA5] hover:text-white"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 text-[11px]">
+              <span className="text-[#7C8AA5] font-medium text-[10px] shrink-0 flex items-center mr-1">
+                <Filter className="w-3 h-3 mr-1 text-[#00C2A8]" />
+                Filtrar:
+              </span>
+              {["Todas", "Finanças", "Gestão", "Marketing", "Vendas", "Operações"].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    setActiveSampleIndex(0);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all shrink-0 ${
+                    selectedCategory === cat
+                      ? "bg-[#00C2A8] text-[#07111F] font-bold shadow-md shadow-[#00C2A8]/20"
+                      : "bg-[#111C31] text-[#B6C2D0] hover:text-white border border-white/5"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Fast Suggestion Pills */}
+            <div className="flex items-center gap-1.5 flex-wrap pt-1">
+              <span className="text-[10px] text-[#7C8AA5]">Clique para testar:</span>
+              {SAMPLE_TERMS.slice(0, 4).map((term) => (
                 <button
                   key={term.sigla}
-                  onClick={() => setActiveSampleIndex(idx)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                    activeSampleIndex === idx
-                      ? "bg-[#00C2A8] text-[#07111F] shadow-lg shadow-[#00C2A8]/20 scale-105"
-                      : "bg-[#111C31] text-[#B6C2D0] hover:text-white border border-white/10 hover:border-[#00C2A8]/30"
+                  onClick={() => {
+                    setDemoSearch(term.sigla);
+                    setActiveSampleIndex(0);
+                  }}
+                  className={`text-[10px] px-2 py-0.5 rounded-md font-bold transition-all ${
+                    selectedTerm?.sigla === term.sigla
+                      ? "bg-[#00C2A8]/20 text-[#00C2A8] border border-[#00C2A8]/50"
+                      : "bg-[#111C31] text-[#7C8AA5] hover:text-white border border-white/5"
                   }`}
                 >
                   {term.sigla}
@@ -157,27 +273,83 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
             </div>
           </div>
 
-          {/* Sample Card Output */}
-          <div className="bg-[#111C31] border border-[#00C2A8]/20 rounded-xl p-4 space-y-2.5 transition-all text-left">
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-black text-[#00C2A8]">{SAMPLE_TERMS[activeSampleIndex].sigla}</span>
-              <span className="text-[10px] bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/30 px-2 py-0.5 rounded-md font-semibold">
-                {SAMPLE_TERMS[activeSampleIndex].categoria}
-              </span>
+          {/* Live Result Card (Faithful to Real App SiglaCard) */}
+          {selectedTerm ? (
+            <div className="bg-[#111C31] border border-[#00C2A8]/30 rounded-xl p-4 sm:p-5 space-y-3 transition-all relative overflow-hidden shadow-lg">
+              <div className="flex items-start justify-between gap-2 border-b border-white/10 pb-3">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xl sm:text-2xl font-black text-[#00C2A8] tracking-tight">
+                      {selectedTerm.sigla}
+                    </span>
+                    <span className="text-[10px] bg-[#00C2A8]/10 text-[#00C2A8] border border-[#00C2A8]/30 px-2.5 py-0.5 rounded-full font-bold">
+                      {selectedTerm.categoria}
+                    </span>
+                  </div>
+                  <h5 className="text-xs font-semibold text-white leading-snug">
+                    {selectedTerm.nome}
+                  </h5>
+                </div>
+
+                <div className="flex items-center space-x-1.5 shrink-0">
+                  <button
+                    onClick={() => setDemoFavorite(!demoFavorite)}
+                    title="Favoritar"
+                    className={`p-1.5 rounded-lg border transition-all ${
+                      demoFavorite 
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/40" 
+                        : "bg-[#0B1727] text-[#7C8AA5] hover:text-white border-white/10"
+                    }`}
+                  >
+                    <Bookmark className={`w-3.5 h-3.5 ${demoFavorite ? "fill-amber-400" : ""}`} />
+                  </button>
+                  <button
+                    onClick={() => handleCopy(`${selectedTerm.sigla}: ${selectedTerm.resumo}`)}
+                    title="Copiar explicação"
+                    className="p-1.5 bg-[#0B1727] text-[#7C8AA5] hover:text-white border border-white/10 rounded-lg transition-all"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Portuguese Translation */}
+              <div className="text-xs text-[#00E5FF] font-medium flex items-center space-x-1.5 bg-[#07111F]/60 px-3 py-1.5 rounded-lg border border-white/5">
+                <span>🇧🇷 Tradução:</span>
+                <span className="text-white font-semibold">{selectedTerm.traducao}</span>
+              </div>
+
+              {/* Summary */}
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold text-[#7C8AA5] uppercase tracking-wider block">O que significa:</span>
+                <p className="text-xs text-[#B6C2D0] leading-relaxed">
+                  {selectedTerm.resumo}
+                </p>
+              </div>
+
+              {/* Workplace Example */}
+              <div className="p-3 bg-[#07111F] rounded-xl border border-white/10 space-y-1">
+                <span className="text-[10px] font-bold text-[#00C2A8] uppercase tracking-wider block">Exemplo real em reunião:</span>
+                <p className="text-xs text-white italic leading-relaxed">
+                  "{selectedTerm.exemplo}"
+                </p>
+              </div>
+
+              {/* Speed & Verification Tag */}
+              <div className="flex items-center justify-between text-[10px] text-[#7C8AA5] pt-1 border-t border-white/5">
+                <span className="flex items-center space-x-1 text-emerald-400 font-medium">
+                  <Zap className="w-3 h-3" />
+                  <span>Resultado retornado em 0.1s</span>
+                </span>
+                <span className="text-[#00C2A8] font-semibold">✓ Verificado no Dicionário</span>
+              </div>
             </div>
-            <p className="text-xs font-semibold text-white">
-              {SAMPLE_TERMS[activeSampleIndex].nome}
-            </p>
-            <p className="text-[11px] text-[#00E5FF] italic">
-              🇧🇷 Tradução: {SAMPLE_TERMS[activeSampleIndex].traducao}
-            </p>
-            <p className="text-xs text-[#B6C2D0] leading-relaxed">
-              {SAMPLE_TERMS[activeSampleIndex].resumo}
-            </p>
-            <div className="pt-2 border-t border-white/10 text-[11px] text-[#7C8AA5]">
-              <strong className="text-white">Exemplo prático:</strong> "{SAMPLE_TERMS[activeSampleIndex].exemplo}"
+          ) : (
+            <div className="p-6 text-center text-xs text-[#7C8AA5] bg-[#111C31] rounded-xl border border-white/5">
+              Nenhuma sigla encontrada para "{demoSearch}". Tente buscar por EBITDA, OKR, ROI ou SLA.
             </div>
-          </div>
+          )}
+
         </div>
       </section>
 
