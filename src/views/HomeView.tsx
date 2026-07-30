@@ -309,93 +309,44 @@ export default function HomeView({
       {/* Ads Top space */}
       <AdsPlaceholder position="top" />
 
-      {/* 2. Interactive Navigation Filters & Siglas Grid - reduced margin-top for a tighter, cleaner layout */}
+      {/* 2. Interactive Navigation Filters & Siglas Grid */}
       <section className="px-5 min-[360px]:px-6 md:px-8 xl:px-8 max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
         {/* Main Content Area: Left/Mid (Grid) */}
         <div className="lg:col-span-3 space-y-6">
-          {showCategoryGrid ? (
-            <div className="space-y-6">
-              <div className="border-b border-white/[0.06] pb-4">
-                <h2 className="text-xl font-extrabold text-white flex items-center space-x-2">
-                  <span>Explore por Área de Negócio</span>
-                </h2>
-                <p className="text-xs text-[#B6C2D0] mt-2">
-                  Selecione uma categoria abaixo para visualizar suas siglas ou utilize a barra de pesquisa acima para encontrar um termo específico.
-                </p>
-              </div>
-
-              {/* Cards layout gap-5 is exactly 20px (Between cards: 20px) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {featuredCategoriesList.map((cat) => (
-                  <div
-                    key={cat.name}
-                    onClick={() => setSelectedCategory(cat.name)}
-                    className="group relative p-6 bg-[#111C31] border border-white/[0.08] hover:bg-[#162540] rounded-[20px] transition-all duration-250 hover:scale-102 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] shadow-md cursor-pointer flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="p-2.5 rounded-xl bg-[#0D1628] border border-white/[0.05] text-[#00C2A8] group-hover:text-[#00D8BB] transition-colors shrink-0">
-                          {cat.icon}
-                        </div>
-                        <span className="text-[10px] font-mono font-bold text-[#B6C2D0] bg-[#0D1628] border border-white/[0.06] px-2.5 py-0.5 rounded-md">
-                          {siglas.filter(s => s.categoria.toLowerCase() === cat.name.toLowerCase()).length || "0"} siglas
-                        </span>
-                      </div>
-
-                      <h3 className="font-display font-extrabold text-lg text-white group-hover:text-[#00C2A8] transition-colors mb-2">
-                        {cat.name}
-                      </h3>
-
-                      <p className="text-xs text-[#B6C2D0] leading-relaxed mb-4">
-                        {cat.desc}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/[0.06] mt-auto">
-                      <span className="text-[10px] text-[#7C8AA5] font-medium">
-                        Exemplos: <strong className="font-mono text-[#00C2A8] font-semibold">{cat.examples}</strong>
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Header titles for current filtered content */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
+            <div>
+              <h2 className="text-xl font-extrabold text-white flex items-center space-x-2">
+                <span>
+                  {selectedCategory === "Todas" 
+                    ? "Dicionário de Siglas Corporativas" 
+                    : `Siglas de ${selectedCategory}`
+                  }
+                </span>
+                <span className="text-sm font-mono text-[#00C2A8] bg-[#111C31] border border-white/[0.08] px-2.5 py-0.5 rounded-full">
+                  {sortedSiglas.length}
+                </span>
+              </h2>
+              <p className="text-xs text-[#B6C2D0] mt-1">
+                Filtrado por letra: <span className="font-bold text-[#00C2A8]">{selectedLetter}</span> | Ordem: <span className="font-bold text-[#00C2A8]">{sortOrder === "az" ? "A-Z" : sortOrder === "za" ? "Z-A" : sortOrder === "popular" ? "Mais Popular" : "Mais Recente"}</span>
+              </p>
             </div>
-          ) : (
-            <>
-              {/* Header titles for current filtered content */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
-                <div>
-                  <h2 className="text-xl font-extrabold text-white flex items-center space-x-2">
-                    <span>
-                      {selectedCategory === "Todas" 
-                        ? "Todas as Siglas" 
-                        : `Siglas de ${selectedCategory}`
-                      }
-                    </span>
-                    <span className="text-sm font-mono text-[#00C2A8] bg-[#111C31] border border-white/[0.08] px-2.5 py-0.5 rounded-full">
-                      {sortedSiglas.length}
-                    </span>
-                  </h2>
-                  <p className="text-xs text-[#B6C2D0] mt-1">
-                    Filtrado por letra: <span className="font-bold text-[#00C2A8]">{selectedLetter}</span> | Ordem: <span className="font-bold text-[#00C2A8]">{sortOrder === "az" ? "A-Z" : sortOrder === "za" ? "Z-A" : sortOrder === "popular" ? "Mais Popular" : "Mais Recente"}</span>
-                  </p>
-                </div>
 
-                {/* Sorting Selection Toolbar */}
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-[#B6C2D0] font-semibold uppercase">Ordenar por:</span>
-                  <select
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                    className="text-xs font-semibold text-white bg-[#111C31] border border-white/[0.08] rounded-lg p-2 focus:ring-1 focus:ring-[#00C2A8] outline-none cursor-pointer"
-                  >
-                    <option value="az">Alfabética: A-Z</option>
-                    <option value="za">Alfabética: Z-A</option>
-                    <option value="popular">Popularidade</option>
-                    <option value="recente">Mais Recente</option>
-                  </select>
-                </div>
-              </div>
+            {/* Sorting Selection Toolbar */}
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-[#B6C2D0] font-semibold uppercase">Ordenar por:</span>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="text-xs font-semibold text-white bg-[#111C31] border border-white/[0.08] rounded-lg p-2 focus:ring-1 focus:ring-[#00C2A8] outline-none cursor-pointer"
+              >
+                <option value="az">Alfabética: A-Z</option>
+                <option value="za">Alfabética: Z-A</option>
+                <option value="popular">Popularidade</option>
+                <option value="recente">Mais Recente</option>
+              </select>
+            </div>
+          </div>
 
               {/* SEO-Optimized Introductory Text for selected category */}
               <div className="p-5 sm:p-6 bg-[#111C31] border border-white/[0.08] rounded-[20px] leading-relaxed text-sm text-[#B6C2D0]">
@@ -506,8 +457,6 @@ export default function HomeView({
                   })}
                 </div>
               )}
-            </>
-          )}
         </div>
 
         {/* Sidebar Panel: Category quick access list & Community Suggestion Form */}
