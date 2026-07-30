@@ -154,15 +154,31 @@ export default function PaywallModal() {
           </div>
         </div>
 
-        {/* VIP / Code activation toggle */}
-        <div className="pt-3 border-t border-white/10 text-center space-y-2 relative z-10">
+        {/* VIP / Code activation toggle & Login Option */}
+        <div className="pt-3 border-t border-white/10 text-center space-y-3 relative z-10">
           {!showVipInput ? (
-            <button
-              onClick={() => setShowVipInput(true)}
-              className="text-xs text-[#7C8AA5] hover:text-[#00C2A8] transition-colors underline"
-            >
-              Já efetuou o pagamento? Digite seu código VIP ou e-mail
-            </button>
+            <div className="flex flex-col space-y-2 items-center">
+              <button
+                type="button"
+                onClick={() => setShowVipInput(true)}
+                className="text-xs text-[#7C8AA5] hover:text-[#00C2A8] transition-colors underline"
+              >
+                Já efetuou o pagamento? Digite seu código VIP ou e-mail
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPaywall(false);
+                  window.history.pushState(null, "", "/login");
+                  window.dispatchEvent(new Event("popstate"));
+                }}
+                className="text-xs text-[#00C2A8] font-bold hover:underline flex items-center justify-center space-x-1"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>Já possui usuário e senha? Fazer Login</span>
+              </button>
+            </div>
           ) : (
             <form onSubmit={handleActivateVip} className="space-y-2 text-left">
               <label className="text-[11px] text-[#B6C2D0] font-medium block">
@@ -176,7 +192,7 @@ export default function PaywallModal() {
                     setVipCode(e.target.value);
                     setVipError(false);
                   }}
-                  placeholder="Ex: VIP5 ou seu@email.com"
+                  placeholder="Ex: SIGLAS5 ou seu@email.com"
                   className="flex-1 px-3 py-2 bg-[#111C31] border border-white/20 rounded-xl text-xs text-white placeholder-[#7C8AA5] focus:outline-none focus:border-[#00C2A8]"
                 />
                 <button

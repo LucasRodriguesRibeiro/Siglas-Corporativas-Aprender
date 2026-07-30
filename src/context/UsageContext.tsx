@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getStoredSession } from "../lib/firebase";
 
 interface UsageContextType {
   usageCount: number;
@@ -24,28 +25,43 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return 0;
   });
 
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const savedUnlocked = localStorage.getItem("siglas_unlocked");
-      const session = localStorage.getItem("auth_session");
-      return savedUnlocked === "true" || !!session;
-    }
-    return false;
-  });
+  // Calculate unlock status: Lifetime access is granted ONLY if user is logged in with username/password OR entered verified VIP code
+  const checkCurrentUnlocked = (): boolean => {
+    if (typeof window === "undefined") return false;
+    const session = getStoredSession();
+    const vipUnlocked = localStorage.getItem("siglas_vip_unlocked") === "true";
+    return !!session || vipUnlocked;
+  };
 
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => checkCurrentUnlocked());
   const [showPaywall, setShowPaywall] = useState<boolean>(false);
 
+  // Synchronize state with session changes or window focus
   useEffect(() => {
-    localStorage.setItem("siglas_usage_count", usageCount.toString());
+    const syncStatus = () => {
+      setIsUnlocked(checkCurrentUnlocked());
+    };
+
+    syncStatus();
+    window.addEventListener("storage", syncStatus);
+    window.addEventListener("focus", syncStatus);
+    return () => {
+      window.removeEventListener("storage", syncStatus);
+      window.removeEventListener("focus", syncStatus);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("siglas_usage_count", usageCount.toString());
+    }
   }, [usageCount]);
 
-  useEffect(() => {
-    localStorage.setItem("siglas_unlocked", isUnlocked ? "true" : "false");
-  }, [isUnlocked]);
-
   const checkAndIncrementUsage = (): boolean => {
-    // If already unlocked (paid or VIP), always allow
-    if (isUnlocked) {
+    // Re-check current unlock state dynamically
+    const currentlyUnlocked = checkCurrentUnlocked();
+    if (currentlyUnlocked) {
+      if (!isUnlocked) setIsUnlocked(true);
       return true;
     }
 
@@ -62,11 +78,19 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const unlockAccess = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("siglas_vip_unlocked", "true");
+    }
     setIsUnlocked(true);
     setShowPaywall(false);
   };
 
   const resetUsage = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("siglas_vip_unlocked");
+      localStorage.removeItem("siglas_unlocked");
+      localStorage.removeItem("siglas_usage_count");
+    }
     setUsageCount(0);
     setIsUnlocked(false);
     setShowPaywall(false);
@@ -97,3 +121,4 @@ export const useUsageLimit = () => {
   }
   return context;
 };
+

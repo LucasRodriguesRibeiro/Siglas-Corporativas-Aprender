@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BookOpen, Lock, LogOut, AlertCircle, Loader2 } from "lucide-react";
-import SalesPage from "./SalesPage";
 import { 
   auth, 
   loginWithFirebase, 
@@ -120,12 +119,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     );
   }
 
-  // If NOT authenticated, show Sales Page by default, or Login Screen if requested
-  if (!isAuthenticated) {
-    if (!showLoginPage) {
-      return <SalesPage onBackToLogin={openLogin} />;
-    }
-
+  // If login page is requested specifically, show Login Screen
+  if (showLoginPage) {
     return (
       <div className="min-h-screen bg-[#07111F] text-white flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md bg-[#0B1727] border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6 animate-fadeIn">
@@ -138,7 +133,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
               Dicionário Corporativo
             </h1>
             <p className="text-xs text-[#B6C2D0] leading-relaxed">
-              Área restrita de alunos. Informe suas credenciais de acesso para entrar.
+              Área de login para alunos ou membros VIP.
             </p>
           </div>
 
@@ -204,7 +199,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
               onClick={closeLogin}
               className="text-xs text-[#00C2A8] font-bold underline hover:text-[#00e6c7] transition-colors"
             >
-              ← Voltar para a página inicial de vendas
+              ← Voltar para a página principal
             </button>
           </div>
         </div>
