@@ -30,12 +30,8 @@ export default function PaywallModal() {
     e.preventDefault();
     const cleanCode = vipCode.trim().toUpperCase();
     
-    // Accept standard VIP test codes or any key length > 3
-    if (
-      ["VIP5", "PAGO5", "SIGLAS5", "5REAIS", "DESBLOQUEAR", "VIP", "ALUNO", "PREMIUM", "HOTMART"].includes(cleanCode) ||
-      cleanCode.includes("@") ||
-      cleanCode.length >= 4
-    ) {
+    // Strict verification code (e.g. valid purchase code or explicit license)
+    if (["SIGLAS5", "PAGO-5REAIS-OK", "HOTMART-VIP-2026"].includes(cleanCode)) {
       setVipSuccess(true);
       setVipError(false);
       setTimeout(() => {
@@ -198,21 +194,11 @@ export default function PaywallModal() {
               )}
               {vipError && (
                 <p className="text-xs text-rose-400">
-                  Código inválido. Dica de teste: Digite <strong>VIP5</strong> para testar o desbloqueio.
+                  Código ou e-mail de compra não localizado.
                 </p>
               )}
             </form>
           )}
-
-          {/* Simular teste rápido */}
-          <div className="pt-2">
-            <button
-              onClick={() => unlockAccess()}
-              className="text-[10px] text-emerald-400/80 hover:text-emerald-400 transition-colors font-mono"
-            >
-              [Simular Desbloqueio de Teste]
-            </button>
-          </div>
         </div>
       </div>
     </div>
