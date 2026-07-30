@@ -4,7 +4,10 @@ import Footer from "./components/Footer";
 import HomeView from "./views/HomeView";
 import SiglaDetailsView from "./views/SiglaDetailsView";
 import BlogView from "./views/BlogView";
+import EbookView from "./views/EbookView";
 import AuthGuard from "./components/AuthGuard";
+import { UsageProvider } from "./context/UsageContext";
+import PaywallModal from "./components/PaywallModal";
 import { getItemUrl } from "./types";
 import { getFilteredSiglas } from "./data/dataService";
 
@@ -236,39 +239,48 @@ export default function App() {
       return <BlogView articleSlug={slug} navigate={navigate} />;
     }
 
+    // 4. E-book A4 View Route: match "/ebook", "/ebook-acelerador", "/ebook-a4"
+    if (path === "/ebook" || path === "/ebook-acelerador" || path === "/ebook-a4") {
+      return <EbookView navigate={navigate} />;
+    }
+
     // 5. 404 Fallback
     return <Custom404View navigate={navigate} />;
   };
 
   return (
-    <AuthGuard>
-      <div className="min-h-screen flex flex-col bg-[#07111F] text-[#FFFFFF] transition-colors duration-250">
-        
-        {/* Web Layout: Hidden when printing */}
-        <div className="print:hidden flex flex-col min-h-screen">
-          {/* Top sticky brand header bar */}
-          <Header
-            currentPath={path}
-            navigate={navigate}
-            setShowFavorites={setShowFavorites}
-            showFavorites={showFavorites}
-          />
+    <UsageProvider>
+      <AuthGuard>
+        <div className="min-h-screen flex flex-col bg-[#07111F] text-[#FFFFFF] transition-colors duration-250">
+          
+          {/* Web Layout: Hidden when printing */}
+          <div className="print:hidden flex flex-col min-h-screen">
+            {/* Top sticky brand header bar */}
+            <Header
+              currentPath={path}
+              navigate={navigate}
+              setShowFavorites={setShowFavorites}
+              showFavorites={showFavorites}
+            />
 
-          {/* Main Dynamic Viewport wrapper */}
-          <main className="flex-grow">
-            {renderView()}
-          </main>
+            {/* Main Dynamic Viewport wrapper */}
+            <main className="flex-grow">
+              {renderView()}
+            </main>
 
-          {/* Shared bottom information map footer */}
-          <Footer
-            navigate={navigate}
-            categories={categoriesList}
-            onSelectCategory={(cat) => {
-              handleSelectCategory(cat);
-              setShowFavorites(false);
-            }}
-          />
-        </div>
+            {/* Shared bottom information map footer */}
+            <Footer
+              navigate={navigate}
+              categories={categoriesList}
+              onSelectCategory={(cat) => {
+                handleSelectCategory(cat);
+                setShowFavorites(false);
+              }}
+            />
+
+            {/* Paywall Popup / Unlock Modal */}
+            <PaywallModal />
+          </div>
 
         {/* Dynamic PDF / Print Layout: Only visible when print is active (Save as PDF) */}
         <div className="hidden print:block text-black bg-white p-10 font-sans space-y-6">
@@ -351,5 +363,6 @@ export default function App() {
         </div>
       </div>
     </AuthGuard>
+  </UsageProvider>
   );
 }

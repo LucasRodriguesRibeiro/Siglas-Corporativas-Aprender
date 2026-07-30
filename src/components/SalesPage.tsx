@@ -93,7 +93,7 @@ const FAQS = [
   },
   {
     q: "Por quanto tempo terei acesso ao dicionário?",
-    a: "O acesso é vitalício! Você paga uma única vez (R$ 67,00) e pode consultar todas as siglas e novos termos sempre que precisar, sem taxas recorrentes."
+    a: "O acesso é vitalício! Você paga uma única vez (R$ 5,00) e pode consultar todas as siglas e novos termos sempre que precisar, sem taxas recorrentes."
   },
   {
     q: "Funciona perfeitamente no celular?",
@@ -541,10 +541,10 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
           </div>
 
           <div className="space-y-2 text-center py-4 bg-[#111C31] rounded-2xl border border-white/10">
-            <p className="text-xs text-[#7C8AA5] line-through">De R$ 197,00 por apenas</p>
+            <p className="text-xs text-[#7C8AA5] line-through">De R$ 97,00 por apenas</p>
             <div className="flex items-center justify-center space-x-1">
               <span className="text-sm font-bold text-[#00C2A8]">R$</span>
-              <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">67,00</span>
+              <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">5,00</span>
             </div>
             <p className="text-xs text-[#00C2A8] font-bold">
               Pagamento Único • Sem Mensalidades
@@ -594,7 +594,7 @@ export default function SalesPage({ onBackToLogin }: SalesPageProps) {
             rel="noopener noreferrer"
             className="w-full py-4 bg-[#00C2A8] hover:bg-[#00e6c7] text-[#07111F] font-black text-sm sm:text-base rounded-2xl transition-all shadow-xl shadow-[#00C2A8]/20 flex items-center justify-center space-x-2 active:scale-95"
           >
-            <span>COMPRAR ACESSO AGORA - R$ 67,00</span>
+            <span>COMPRAR ACESSO AGORA - R$ 5,00</span>
             <ChevronRight className="w-4 h-4 shrink-0" />
           </a>
 

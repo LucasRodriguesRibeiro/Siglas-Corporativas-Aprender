@@ -19,6 +19,7 @@ import AdsPlaceholder from "../components/AdsPlaceholder";
 import CorporateDictionary from "../components/CorporateDictionary";
 import { TIPO_LABELS } from "./HomeView";
 import { getSiglaBySlug, getFilteredSiglas, getBlogArticles } from "../data/dataService";
+import { useUsageLimit } from "../context/UsageContext";
 
 interface SiglaDetailsViewProps {
   slug: string;
@@ -43,7 +44,14 @@ export default function SiglaDetailsView({
   const [copiedMeaning, setCopiedMeaning] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
 
+  const { usageCount, maxFreeUses, isUnlocked, setShowPaywall } = useUsageLimit();
+
   // Load selected sigla data
+  useEffect(() => {
+    if (usageCount >= maxFreeUses && !isUnlocked) {
+      setShowPaywall(true);
+    }
+  }, [slug, usageCount, maxFreeUses, isUnlocked]);
   useEffect(() => {
     function loadSigla() {
       try {

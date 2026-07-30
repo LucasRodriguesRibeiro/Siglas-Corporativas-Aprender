@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Search, TrendingUp, Tag, Layers, Clock, Sparkles } from "lucide-react";
+import { Search, TrendingUp, Tag, Layers, Sparkles } from "lucide-react";
 import { getItemUrl, Sigla } from "../types";
 import { getAllSiglas } from "../data/dataService";
+import { useUsageLimit } from "../context/UsageContext";
 
 interface CorporateDictionaryProps {
   navigate: (to: string) => void;
@@ -41,37 +42,17 @@ export default function CorporateDictionary({
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [allSiglas, setAllSiglas] = useState<Sigla[]>([]);
-  const [activeTab, setActiveTab] = useState<"siglas" | "termos" | "categorias" | "recentes">("siglas");
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"siglas" | "termos" | "categorias">("siglas");
 
-  // Load all siglas and recent searches on mount
+  // Load all siglas on mount
   useEffect(() => {
     try {
       const data = getAllSiglas();
       setAllSiglas(data);
-
-      const raw = localStorage.getItem("dicionario_recent_searches");
-      if (raw) {
-        setRecentSearches(JSON.parse(raw));
-      } else {
-        setRecentSearches(["OKR", "EBITDA", "Stakeholder", "CRM", "Compliance"]);
-      }
     } catch (err) {
       console.error("Erro ao carregar dados no CorporateDictionary:", err);
     }
   }, []);
-
-  const saveRecentSearch = (term: string) => {
-    if (!term || !term.trim()) return;
-    const clean = term.trim();
-    const updated = [clean, ...recentSearches.filter(s => s.toLowerCase() !== clean.toLowerCase())].slice(0, 8);
-    setRecentSearches(updated);
-    try {
-      localStorage.setItem("dicionario_recent_searches", JSON.stringify(updated));
-    } catch (e) {
-      console.error("Erro ao salvar pesquisa recente:", e);
-    }
-  };
 
   // Autocomplete Suggestions (top 6 matched items)
   const autocompleteSuggestions = (() => {
@@ -102,8 +83,10 @@ export default function CorporateDictionary({
     return [...startsWithSigla, ...containsSigla, ...containsName, ...containsOthers].slice(0, 6);
   })();
 
+  const { checkAndIncrementUsage } = useUsageLimit();
+
   const handleSelectItem = (item: Sigla) => {
-    saveRecentSearch(item.sigla);
+    if (!checkAndIncrementUsage()) return;
     navigate(getItemUrl(item));
   };
 
@@ -111,8 +94,9 @@ export default function CorporateDictionary({
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
+    if (!checkAndIncrementUsage()) return;
+
     const q = searchQuery.trim();
-    saveRecentSearch(q);
 
     // If exact match exists, go directly to item page
     const exactMatch = allSiglas.find(
@@ -127,7 +111,7 @@ export default function CorporateDictionary({
   };
 
   const handleTagClick = (term: string) => {
-    saveRecentSearch(term);
+    if (!checkAndIncrementUsage()) return;
     const item = allSiglas.find(
       s => s.sigla.toLowerCase() === term.toLowerCase() || s.slug.toLowerCase() === term.toLowerCase()
     );
@@ -261,19 +245,6 @@ export default function CorporateDictionary({
             <Layers className="w-3.5 h-3.5" />
             <span>Categorias</span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("recentes")}
-            className={`px-3.5 py-1.5 rounded-xl transition-all duration-250 flex items-center space-x-1.5 ${
-              activeTab === "recentes"
-                ? "bg-[#00C2A8] text-[#07111F] shadow-sm"
-                : "bg-[#0D1628] text-[#B6C2D0] hover:text-white hover:bg-[#162540]"
-            }`}
-          >
-            <Clock className="w-3.5 h-3.5" />
-            <span>Últimas pesquisas</span>
-          </button>
         </div>
 
         {/* Tag Grid display based on active tab */}
@@ -308,18 +279,6 @@ export default function CorporateDictionary({
                 className="px-3 py-1 bg-[#0D1628] hover:bg-[#162540] text-[#B6C2D0] hover:text-[#00C2A8] border border-white/[0.08] hover:border-[#00C2A8]/40 rounded-xl text-xs font-semibold transition-all duration-250"
               >
                 {c}
-              </button>
-            ))}
-
-          {activeTab === "recentes" &&
-            recentSearches.map((r, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleTagClick(r)}
-                className="px-3 py-1 bg-[#0D1628] hover:bg-[#162540] text-[#B6C2D0] hover:text-[#00C2A8] border border-white/[0.08] hover:border-[#00C2A8]/40 rounded-xl text-xs font-semibold transition-all duration-250 flex items-center space-x-1"
-              >
-                <Clock className="w-3 h-3 text-[#7C8AA5]" />
-                <span>{r}</span>
               </button>
             ))}
         </div>

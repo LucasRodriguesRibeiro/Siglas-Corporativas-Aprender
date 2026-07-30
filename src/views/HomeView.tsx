@@ -27,6 +27,7 @@ import AdsPlaceholder from "../components/AdsPlaceholder";
 import CorporateDictionary from "../components/CorporateDictionary";
 import { SiglaCardSkeleton } from "../components/Skeleton";
 import { getPortalStats, getBlogArticles, getFilteredSiglas } from "../data/dataService";
+import { useUsageLimit } from "../context/UsageContext";
 
 export const TIPO_LABELS: Record<string, string> = {
   SIGLA: "Sigla",
@@ -68,6 +69,8 @@ export default function HomeView({
   showFavorites,
   setShowFavorites
 }: HomeViewProps) {
+  const { checkAndIncrementUsage } = useUsageLimit();
+
   // Database States
   const [siglas, setSiglas] = useState<Sigla[]>([]);
   const [stats, setStats] = useState<PortalStats | null>(null);
@@ -444,7 +447,10 @@ export default function HomeView({
                     return (
                       <div
                         key={item.id}
-                        onClick={() => navigate(getItemUrl(item))}
+                        onClick={() => {
+                          if (!checkAndIncrementUsage()) return;
+                          navigate(getItemUrl(item));
+                        }}
                         className="group relative p-6 bg-[#111C31] border border-white/[0.08] hover:bg-[#162540] hover:scale-102 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] shadow-md rounded-[20px] transition-all duration-250 cursor-pointer flex flex-col justify-between"
                       >
                         <div>

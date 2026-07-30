@@ -78,6 +78,14 @@ export default function Footer({ navigate, categories, onSelectCategory }: Foote
                   Artigos e Blog
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => navigate("/ebook")}
+                  className="text-sm text-[#00C2A8] font-bold hover:underline transition-colors text-left flex items-center space-x-1"
+                >
+                  <span>📖 E-book A4 Acelerador</span>
+                </button>
+              </li>
             </ul>
           </div>
         </div>
