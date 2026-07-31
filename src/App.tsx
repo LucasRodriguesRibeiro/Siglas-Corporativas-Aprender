@@ -145,10 +145,10 @@ export default function App() {
     const matchedCategory = PATH_TO_CATEGORY[path];
     if (matchedCategory) {
       setSelectedCategory(matchedCategory);
-      document.title = `Siglas Corporativas de ${matchedCategory} - Dicionário Gratuito`;
+      document.title = `Siglas de ${matchedCategory} [Gratuito] | Aprenda Significado e Conceitos`;
     } else if (path === "/") {
       setSelectedCategory("Todas");
-      document.title = "Dicionário Corporativo Gratuito | Siglas, Termos e Cargos";
+      document.title = "Dicionário Corporativo Gratuito | Aprenda Siglas, Termos e Cargos";
     }
   }, [path]);
 

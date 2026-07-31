@@ -481,71 +481,71 @@ Sitemap: ${baseUrl}/sitemap.xml
 function injectSEOMetadata(html: string, urlPath: string): string {
   const baseUrl = process.env.APP_URL || "https://siglascorporativasaprender.com.br";
   
-  let title = "Dicionário Corporativo Gratuito | Siglas, Termos e Cargos";
-  let desc = "Consulte o Dicionário Corporativo Gratuito com mais de 500 siglas corporativas, termos corporativos, cargos, metodologias e ferramentas empresariais. Pesquise rapidamente online.";
+  let title = "Dicionário Corporativo Gratuito | Aprenda Siglas, Termos e Cargos";
+  let desc = "Aprenda gratuitamente o significado de mais de 500 siglas corporativas, termos de negócios, cargos C-Level e metodologias. Consulte o Dicionário Corporativo Gratuito online.";
   let canonical = `${baseUrl}${urlPath}`;
   let schemaString = "";
 
   const CATEGORY_SEO_INFO: Record<string, { title: string; desc: string; categoryName: string }> = {
     "/siglas-corporativas": {
       categoryName: "Todas",
-      title: "Siglas Corporativas | Dicionário Completo de Siglas Empresariais",
-      desc: "Aprenda e consulte gratuitamente o significado de mais de 500 siglas corporativas em português e inglês para acelerar sua carreira profissional."
+      title: "Siglas Corporativas [Gratuito] | Aprenda Significado e Conceitos",
+      desc: "Aprenda gratuitamente o significado de mais de 500 siglas corporativas em português e inglês. Dicionário Corporativo Gratuito com exemplos práticos."
     },
     "/dicionario-corporativo": {
       categoryName: "Todas",
-      title: "Dicionário Corporativo Gratuito | O Maior Portal de Linguagem Empresarial",
-      desc: "O maior dicionário corporativo online e gratuito do Brasil. Pesquise e aprenda o significado de siglas empresariais, termos técnicos, cargos e metodologias."
+      title: "Dicionário Corporativo Gratuito | Aprenda Siglas e Termos Empresariais",
+      desc: "Aprenda gratuitamente no maior Dicionário Corporativo online do Brasil. Pesquise siglas, termos de negócios, cargos C-Level e metodologias grátis."
     },
     "/glossario-corporativo": {
       categoryName: "Todas",
-      title: "Glossário Corporativo Completo | Termos, Siglas e Expressões de Negócios",
-      desc: "Glossário corporativo gratuito com explicações objetivas, exemplos práticos e pronúncia correta de siglas e expressões utilizadas no mercado empresarial."
+      title: "Glossário Corporativo [Gratuito] | Aprenda Termos e Siglas de Negócios",
+      desc: "Aprenda gratuitamente o vocabulário corporativo completo: siglas, termos técnicos, jargões e expressões empresariais com explicações e exemplos."
     },
     "/termos-corporativos": {
       categoryName: "Todas",
-      title: "Termos Corporativos e Expressões Empresariais - Dicionário Gratuito",
-      desc: "Conheça o significado dos principais termos corporativos e jargões empresariais: Stakeholder, Onboarding, Compliance, Benchmark, Pitch, Turnover e mais."
+      title: "Termos Corporativos [Gratuito] | Aprenda os Jargões Empresariais",
+      desc: "Aprenda gratuitamente o significado dos termos corporativos: Stakeholder, Onboarding, Compliance, Benchmark, Pitch e mais no Dicionário Gratuito."
     },
     "/cargos-corporativos": {
       categoryName: "Todas",
-      title: "Cargos Corporativos e Executivos (C-Level) - Dicionário e Significados",
-      desc: "Guia definitivo de cargos corporativos e posições C-Level: CEO, CFO, COO, CTO, CMO, CPO, SDR, Head de Operações. Saiba funções e hierarquias."
+      title: "Cargos Corporativos C-Level [Gratuito] | Aprenda Funções e Hierarquia",
+      desc: "Aprenda gratuitamente o significado dos cargos executivos: CEO, CFO, COO, CTO, CMO, CPO, SDR e Head. Dicionário Corporativo Gratuito."
     },
     "/siglas-marketing": {
       categoryName: "Marketing",
-      title: "Siglas Corporativas de Marketing - Significado e Conceitos | SIGLAS CORPORATIVAS",
-      desc: "Aprenda o significado das siglas corporativas de marketing mais importantes do mercado: CAC, LTV, CTR, ROI, CPA e muito mais. Domine os jargões do marketing digital."
+      title: "Siglas de Marketing [Gratuito] | Aprenda CAC, LTV, CTR, ROI e CPA",
+      desc: "Aprenda gratuitamente o significado das principais siglas de marketing: CAC, LTV, CTR, ROI, CPA. Consulte o Dicionário Corporativo Gratuito."
     },
     "/siglas-rh": {
       categoryName: "Recursos Humanos",
-      title: "Siglas Corporativas de Recursos Humanos (RH) - Dicionário Completo | SIGLAS CORPORATIVAS",
-      desc: "Descubra o significado das siglas corporativas de RH e Gestão de Pessoas: CLT, PJ, EVP, PDI, ATS e mais. O maior glossário corporativo de Recursos Humanos."
+      title: "Siglas de RH e Pessoas [Gratuito] | Aprenda CLT, PJ, EVP e PDI",
+      desc: "Aprenda gratuitamente o significado das siglas de Recursos Humanos: CLT, PJ, EVP, PDI, ATS e mais. Dicionário Corporativo Gratuito de RH."
     },
     "/siglas-financeiras": {
       categoryName: "Financeiro",
-      title: "Siglas Corporativas Financeiras - Glossário Contábil e de Negócios | SIGLAS CORPORATIVAS",
-      desc: "Compreenda e aprenda siglas corporativas financeiras mais influentes: EBITDA, ROI, DRE, CAGR, CAPEX, OPEX. Essencial para investidores e executivos."
+      title: "Siglas Financeiras [Gratuito] | Aprenda EBITDA, ROI, DRE e CAPEX",
+      desc: "Aprenda gratuitamente as siglas financeiras e contábeis: EBITDA, ROI, DRE, CAGR, CAPEX, OPEX. Dicionário Corporativo Gratuito e Completo."
     },
     "/siglas-tecnologia": {
       categoryName: "Tecnologia",
-      title: "Siglas Corporativas de Tecnologia e TI - Lista e Significado | SIGLAS CORPORATIVAS",
-      desc: "Estude o significado das siglas corporativas de tecnologia, desenvolvimento de software e TI: API, SaaS, BI, UX, UI, CTO. Domine o vocabulário tech."
+      title: "Siglas de Tecnologia e TI [Gratuito] | Aprenda API, SaaS, BI e UX",
+      desc: "Aprenda gratuitamente o significado das siglas de TI e tecnologia: API, SaaS, BI, UX, UI, CTO. Dicionário Corporativo Gratuito e Atualizado."
     },
     "/siglas-vendas": {
       categoryName: "Vendas",
-      title: "Siglas Corporativas de Vendas e Comercial - Significado | SIGLAS CORPORATIVAS",
-      desc: "Aprenda o significado das siglas corporativas de vendas: CRM, SQL, MQL, SDR, LTV. Melhore a performance de suas equipes e funil comercial."
+      title: "Siglas de Vendas [Gratuito] | Aprenda CRM, SQL, MQL, SDR e LTV",
+      desc: "Aprenda gratuitamente o significado das siglas de vendas e comercial: CRM, SQL, MQL, SDR, LTV. Melhore seus resultados com o Dicionário Gratuito."
     },
     "/siglas-logistica": {
       categoryName: "Logística",
-      title: "Siglas Corporativas de Logística e Supply Chain - Dicionário | SIGLAS CORPORATIVAS",
-      desc: "Aprenda o significado das principais siglas corporativas de logística: SLA, SKU, 3PL, WMS, FIFO, ERP. Otimize o vocabulário da sua cadeia de suprimentos."
+      title: "Siglas de Logística [Gratuito] | Aprenda SLA, SKU, 3PL e WMS",
+      desc: "Aprenda gratuitamente o significado das siglas de logística e supply chain: SLA, SKU, 3PL, WMS, FIFO, ERP no Dicionário Corporativo Gratuito."
     },
     "/siglas-gestao": {
       categoryName: "Gestão",
-      title: "Siglas Corporativas de Gestão e Administração - Significado | SIGLAS CORPORATIVAS",
-      desc: "Conheça o significado das siglas corporativas de gestão e administração: OKR, KPI, CEO, CFO, COO, PMO. Desenvolva sua liderança profissional."
+      title: "Siglas de Gestão [Gratuito] | Aprenda OKR, KPI, CEO, CFO e PMO",
+      desc: "Aprenda gratuitamente as siglas de gestão e administração: OKR, KPI, CEO, CFO, COO, PMO. Dicionário Corporativo Gratuito."
     }
   };
 
@@ -559,8 +559,8 @@ function injectSEOMetadata(html: string, urlPath: string): string {
     const slug = urlPath.replace(matchedPrefix, "").split(/[?#]/)[0];
     const sigla = siglasList.find(s => s.slug === slug.toLowerCase());
     if (sigla) {
-      title = `${sigla.sigla} - O que é, Significado e Exemplo (${sigla.nome_completo}) | Dicionário Corporativo`;
-      desc = `O que significa ${sigla.sigla} (${sigla.nome_completo})? Saiba o significado completo em ${sigla.categoria}, exemplo prático de uso em reuniões, tradução, origem e pronúncia.`;
+      title = `${sigla.sigla}: O que significa? [Aprenda Grátis] - ${sigla.nome_completo}`;
+      desc = `Aprenda gratuitamente o significado de ${sigla.sigla} (${sigla.nome_completo}) na área de ${sigla.categoria}. Veja exemplo prático de uso em reuniões, tradução e pronúncia no Dicionário Corporativo Gratuito.`;
       
       const definedTermSchema = {
         "@context": "https://schema.org",

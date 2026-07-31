@@ -122,8 +122,8 @@ export default function SiglaDetailsView({
     const baseUrl = "https://siglascorporativasaprender.com.br";
     const currentUrl = `${baseUrl}${getItemUrl(sigla)}`;
 
-    const pageTitle = `${sigla.sigla} - O que é, Significado e Exemplo (${sigla.nome_completo}) | Dicionário Corporativo`;
-    const pageDesc = `O que significa ${sigla.sigla} (${sigla.nome_completo})? Saiba o significado completo em ${sigla.categoria}, exemplo prático em reuniões, tradução, origem e pronúncia.`;
+    const pageTitle = `${sigla.sigla}: O que significa? [Aprenda Grátis] - ${sigla.nome_completo}`;
+    const pageDesc = `Aprenda gratuitamente o significado de ${sigla.sigla} (${sigla.nome_completo}) na área de ${sigla.categoria}. Veja exemplo prático de uso em reuniões, tradução e pronúncia no Dicionário Corporativo Gratuito.`;
 
     document.title = pageTitle;
 
