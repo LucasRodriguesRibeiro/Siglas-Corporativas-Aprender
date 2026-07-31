@@ -14,16 +14,30 @@ interface UsageContextType {
 
 const MAX_FREE_USES = 3;
 
+const getTodayDateString = (): string => {
+  return new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+};
+
+const getInitialUsageCount = (): number => {
+  if (typeof window === "undefined") return 0;
+  const today = getTodayDateString();
+  const savedDate = localStorage.getItem("siglas_usage_date");
+
+  // If date changed or not set, reset usage for the new day
+  if (savedDate !== today) {
+    localStorage.setItem("siglas_usage_date", today);
+    localStorage.setItem("siglas_usage_count", "0");
+    return 0;
+  }
+
+  const saved = localStorage.getItem("siglas_usage_count");
+  return saved ? parseInt(saved, 10) : 0;
+};
+
 const UsageContext = createContext<UsageContextType | undefined>(undefined);
 
 export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [usageCount, setUsageCount] = useState<number>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("siglas_usage_count");
-      return saved ? parseInt(saved, 10) : 0;
-    }
-    return 0;
-  });
+  const [usageCount, setUsageCount] = useState<number>(() => getInitialUsageCount());
 
   // Calculate unlock status: Lifetime access is granted ONLY if user is logged in with username/password OR entered verified VIP code
   const checkCurrentUnlocked = (): boolean => {
@@ -36,10 +50,21 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isUnlocked, setIsUnlocked] = useState<boolean>(() => checkCurrentUnlocked());
   const [showPaywall, setShowPaywall] = useState<boolean>(false);
 
-  // Synchronize state with session changes or window focus
+  // Synchronize state with session changes, date changes or window focus
   useEffect(() => {
     const syncStatus = () => {
       setIsUnlocked(checkCurrentUnlocked());
+
+      // Auto-reset if a new day has arrived while application is open
+      if (typeof window !== "undefined") {
+        const today = getTodayDateString();
+        const savedDate = localStorage.getItem("siglas_usage_date");
+        if (savedDate !== today) {
+          localStorage.setItem("siglas_usage_date", today);
+          localStorage.setItem("siglas_usage_count", "0");
+          setUsageCount(0);
+        }
+      }
     };
 
     syncStatus();
@@ -53,6 +78,8 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const today = getTodayDateString();
+      localStorage.setItem("siglas_usage_date", today);
       localStorage.setItem("siglas_usage_count", usageCount.toString());
     }
   }, [usageCount]);
@@ -65,14 +92,25 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return true;
     }
 
-    // Check if limit is reached
-    if (usageCount >= MAX_FREE_USES) {
+    const today = getTodayDateString();
+    const savedDate = localStorage.getItem("siglas_usage_date");
+
+    let currentCount = usageCount;
+    if (savedDate !== today) {
+      currentCount = 0;
+      localStorage.setItem("siglas_usage_date", today);
+      localStorage.setItem("siglas_usage_count", "0");
+      setUsageCount(0);
+    }
+
+    // Check if daily limit is reached
+    if (currentCount >= MAX_FREE_USES) {
       setShowPaywall(true);
       return false;
     }
 
     // Increment usage count and allow
-    const nextCount = usageCount + 1;
+    const nextCount = currentCount + 1;
     setUsageCount(nextCount);
     return true;
   };
@@ -89,6 +127,7 @@ export const UsageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (typeof window !== "undefined") {
       localStorage.removeItem("siglas_vip_unlocked");
       localStorage.removeItem("siglas_unlocked");
+      localStorage.removeItem("siglas_usage_date");
       localStorage.removeItem("siglas_usage_count");
     }
     setUsageCount(0);
@@ -121,4 +160,5 @@ export const useUsageLimit = () => {
   }
   return context;
 };
+
 

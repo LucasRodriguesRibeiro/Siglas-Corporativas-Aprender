@@ -559,9 +559,22 @@ function injectSEOMetadata(html: string, urlPath: string): string {
     const slug = urlPath.replace(matchedPrefix, "").split(/[?#]/)[0];
     const sigla = siglasList.find(s => s.slug === slug.toLowerCase());
     if (sigla) {
-      title = `${sigla.sigla} - Significado, Tradução e Exemplo | SIGLAS CORPORATIVAS`;
-      desc = `O que significa a sigla ${sigla.sigla} (${sigla.nome_completo})? Saiba a tradução, pronúncia correta, quando utilizar e exemplo prático de uso empresarial.`;
+      title = `${sigla.sigla} - O que é, Significado e Exemplo (${sigla.nome_completo}) | Dicionário Corporativo`;
+      desc = `O que significa ${sigla.sigla} (${sigla.nome_completo})? Saiba o significado completo em ${sigla.categoria}, exemplo prático de uso em reuniões, tradução, origem e pronúncia.`;
       
+      const definedTermSchema = {
+        "@context": "https://schema.org",
+        "@type": "DefinedTerm",
+        "name": sigla.sigla,
+        "termCode": sigla.sigla,
+        "description": `${sigla.nome_completo} - ${sigla.descricao_curta}`,
+        "inDefinedTermSet": {
+          "@type": "DefinedTermSet",
+          "name": "Dicionário Corporativo",
+          "url": baseUrl
+        }
+      };
+
       const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -571,7 +584,7 @@ function injectSEOMetadata(html: string, urlPath: string): string {
             "name": `O que significa a sigla ${sigla.sigla}?`,
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": `${sigla.sigla} significa ${sigla.nome_completo}. ${sigla.descricao_curta}`
+              "text": `${sigla.sigla} significa "${sigla.nome_completo}". ${sigla.descricao_curta}`
             }
           },
           {
@@ -604,6 +617,7 @@ function injectSEOMetadata(html: string, urlPath: string): string {
       };
 
       schemaString = `
+        <script type="application/ld+json">${JSON.stringify(definedTermSchema)}</script>
         <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
       `;

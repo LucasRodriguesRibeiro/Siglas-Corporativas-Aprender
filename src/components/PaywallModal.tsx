@@ -66,7 +66,7 @@ export default function PaywallModal() {
         <div className="text-center space-y-3 relative z-10">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 bg-amber-500/15 border border-amber-500/40 rounded-full text-xs font-bold text-amber-400">
             <Lock className="w-3.5 h-3.5 shrink-0" />
-            <span>Limite de Consultas Gratuitas Atingido ({usageCount}/{maxFreeUses})</span>
+            <span>Limite Diário de Consultas Atingido ({usageCount}/{maxFreeUses})</span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
@@ -74,7 +74,7 @@ export default function PaywallModal() {
           </h2>
 
           <p className="text-xs sm:text-sm text-[#B6C2D0] leading-relaxed max-w-md mx-auto">
-            Você já realizou suas <strong>3 consultas gratuitas</strong>. Para pesquisar e acessar todas as <strong>+500 siglas corporativas</strong> sem limitações, libere seu acesso vitalício.
+            Você utilizou suas <strong>3 consultas gratuitas de hoje</strong>. O limite será renovado automaticamente amanhã! Para navegar ilimitado agora mesmo sem limitações, ative seu acesso vitalício por apenas R$ 5,00.
           </p>
         </div>
 
